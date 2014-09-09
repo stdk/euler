@@ -10,7 +10,7 @@ int main() {
 
 	auto str = number.get_str();
 	auto sum = std::accumulate(str.begin(), str.end(), (size_t)0, [](size_t a, size_t b) {
-		return a + b - 0x30;
+		return a + b - '0';
 	});
 
 	std::cout << str << "(" << str.size() << "): " << sum << std::endl;
