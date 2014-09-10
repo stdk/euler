@@ -23,3 +23,5 @@ add_executable(problem18 "src/problem18.cpp")
 
 add_executable(problem20 "src/problem20.cpp")
 target_link_libraries(problem20 gmp gmpxx)
+
+add_executable(problem23 "src/problem23.cpp" "src/primes.cpp")
