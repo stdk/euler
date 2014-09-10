@@ -1,16 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
-#include <alloca.h>
+#include <memory>
 
 void process(std::istream &stream, size_t *numbers, size_t count) {
 	size_t new_count = count + 1;
-        size_t *new_numbers = (size_t*)alloca(sizeof(size_t) * new_count);
+    std::unique_ptr<size_t[]> new_numbers(new size_t[new_count]);
 
 	for(size_t i=0;i<new_count;i++) {
-		stream >> new_numbers[i];
-		if(!stream) return;
+		if(!(stream >> new_numbers[i])) return;
 
 		std::cout.width(3);
 		std::cout.fill('0');
@@ -18,7 +16,7 @@ void process(std::istream &stream, size_t *numbers, size_t count) {
 	}
 	std::cout << std::endl;
 	
-	process(stream, new_numbers, new_count);
+	process(stream, new_numbers.get(), new_count);
 
 	for(size_t i=0;i<new_count;i++) {
 		std::cout.width(3);
