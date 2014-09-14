@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 
+#cmake -G"Eclipse CDT4 - MinGW Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4 -DCMAKE_CXX_COMPILER_ARG1=-std=c++11 .
+
 project(euler)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set (CMAKE_CXX_COMPILER_ARG1 -std=c++11)
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 include_directories("inc")
 
