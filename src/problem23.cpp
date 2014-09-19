@@ -1,38 +1,52 @@
 #include <iostream>
 #include <numeric>
 #include <tuple>
+#include <vector>
 #include <primes.h>
 
-std::vector<size_t> get_all_divisors(const CompactFactors &factors) {
-    std::vector<size_t> divisors = {1};
+const size_t abundant_representable_limit = 28123;
 
-    for(auto i = factors.cbegin(); i<factors.cend();++i) {
-        size_t divisor = 1;
-        for(size_t j = 0;j<std::get<1>(*i);j++) {
-            divisor *= std::get<0>(*i);
-            divisors.push_back(divisor);
-            for(auto k=i+1;k!=factors.cend();++k) {
-                divisors.push_back(divisor*std::get<0>);
+size_t sum_all_divisors(const CompactFactors &factors) {
+    size_t sum = 1;
+
+    for(const auto &f: factors) {
+        size_t c = 0;
+        for(size_t i=0,s=1;i<=std::get<1>(f);++i,s*=std::get<0>(f)) c += s;
+        sum *= c;
+    }
+
+    return sum >> 1;
+}
+
+std::vector<size_t> get_abundant_numbers(size_t limit, const Primes &primes) {
+    std::vector<size_t> abundant;
+
+    for(size_t i=1;i<limit;i++) {
+        auto factors = factorize_compact(i,primes);
+        auto divisors_sum = sum_all_divisors(factors);
+        if(i < divisors_sum) abundant.push_back(i);
+    }
+
+    return abundant;
+}
+
+int main() {
+    const auto primes = generate_primes(abundant_representable_limit*2);
+    const auto abundant = get_abundant_numbers(abundant_representable_limit, primes);
+
+    size_t total = abundant_representable_limit*(abundant_representable_limit-1)/2;
+
+    std::vector<bool> abundant_representable(abundant_representable_limit, false);
+    for(auto a=abundant.begin();a!=abundant.end();++a) {
+        for(auto b = a;b!=abundant.end();++b) {
+            size_t s = *a + *b;
+            if(s < abundant_representable.size() && !abundant_representable[s]) {
+                total -= s;
+                abundant_representable[s] = true;
             }
         }
     }
 
-    return divisors;
-}
-
-int main() {
-    auto primes = generate_primes(1000000);
-
-    for(size_t i=1;i<100;i++) {
-        auto divisors = factorize_compact(i,primes);
-        size_t sum = std::accumulate(divisors.begin(), divisors.end(), (size_t)0, [](size_t s, CompactFactor &f) {
-            return s + std::get<0>(f);
-        });
-        if(sum == i + 1) {
-            std::cout << i << " " << "is a perfect number" << std::endl;
-        }
-    }
-
-    std::cout << "Hello world!" << std::endl;
+    std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: " << total << std::endl;
     return 0;
 }
