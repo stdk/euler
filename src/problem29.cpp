@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cstdlib>
 #include <util.h>
 
 std::vector<size_t> preprocess(size_t limit) {
@@ -28,7 +29,8 @@ std::vector<size_t> preprocess(size_t limit) {
 std::vector<size_t> generate_powers(size_t limit) {
 	std::vector<size_t> powers_size;
 	std::vector<bool> checked(limit+1);
-	for(size_t i=2;i<=limit;i++) {
+	size_t barrier = sqrt(limit) + 1;
+	for(size_t i=2;i<=barrier;i++) {
 		if(!checked[i]) {
 			size_t k = i;
 			size_t size = 0;
@@ -43,8 +45,13 @@ std::vector<size_t> generate_powers(size_t limit) {
 	return powers_size;
 }
 
-int main() {
-	const size_t limit = 100;
+int main(int argc, char **argv) {
+	if(argc < 2) {
+		std::cerr << "Usage: problem29 <upper limit>" << std::endl;
+		return 1;
+	}
+
+	const size_t limit = strtoul(argv[1],0,0);
 	size_t unique_count = (limit - 2 + 1)*(limit - 2 + 1);
 
 	auto elapsed = measure([&]() {
