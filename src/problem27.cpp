@@ -23,8 +23,8 @@ size_t sequential_primes_length(const Primes &primes, int a, size_t b) {
 }
 
 int main() {
-	const auto primes = generate_primes(1000000);
-	auto primes_b = generate_primes(1000);
+	const auto primes = generate_primes_vector(1000000);
+	auto primes_b = generate_primes_vector(1000);
 	primes_b.push_back(1);
 
 	long int a_best = 0;

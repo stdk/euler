@@ -13,7 +13,7 @@ inline size_t divisors_count(const CompactFactors &factors) {
 }
 
 int main() {
-    auto primes = generate_primes(100000);
+    auto primes = generate_primes_vector(100000);
     CompactFactors factors;
     factors.reserve(10); //no more capacity should be required, since 9 unique primes give at least 512 divisors instantly
     

@@ -31,7 +31,7 @@ std::vector<size_t> get_abundant_numbers(size_t limit, const Primes &primes) {
 }
 
 int main() {
-    const auto primes = generate_primes(abundant_representable_limit*2);
+    const auto primes = generate_primes_vector(abundant_representable_limit*2);
     const auto abundant = get_abundant_numbers(abundant_representable_limit, primes);
 
     size_t total = abundant_representable_limit*(abundant_representable_limit-1)/2;

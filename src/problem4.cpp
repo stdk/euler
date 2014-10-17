@@ -72,7 +72,7 @@ void check_palindromes(const std::vector<size_t> &primes) {
 
 
 int main() {
-    auto primes = generate_primes(10000);   
+    auto primes = generate_primes_vector(10000);
     
     check_palindromes(primes);
     

@@ -14,7 +14,7 @@ size_t reciprocal_cycle_length(size_t prime) {
 }
 
 int main() {
-	const auto primes = generate_primes(1000);
+	const auto primes = generate_primes_vector(1000);
 
 	size_t longest_rcp_cycle_number = 0;
 	size_t longest_rcp_cycle_length = 0;
