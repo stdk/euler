@@ -10,7 +10,8 @@ typedef std::vector<std::size_t> Factors;
 typedef std::tuple<std::size_t, std::size_t> CompactFactor;
 typedef std::vector<CompactFactor> CompactFactors;
 
-const std::vector<std::size_t> generate_primes(std::size_t limit);
+std::tuple<const Primes, const std::vector<bool>> generate_primes_state(size_t limit);
+const std::vector<std::size_t> generate_primes_vector(std::size_t limit);
 
 std::size_t sum_primes(std::size_t limit);
 
