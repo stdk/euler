@@ -27,8 +27,8 @@ int main() {
 	auto primes_b = generate_primes(1000);
 	primes_b.push_back(1);
 
-	int a_best = 0;
-	size_t b_best = 0;
+	long int a_best = 0;
+	long int b_best = 0;
 	size_t longest_sequence = 0;
 	for(auto b=primes_b.begin()+1;b!=primes_b.end();++b) {
 		for(int a = -999;a<1000;a+=2) {
@@ -43,6 +43,7 @@ int main() {
 	}
 
 	std::cout << "a = " << a_best << " | " << "b = " << b_best << " | length = " << longest_sequence << std::endl;
+	std::cout << "Product: " << a_best*b_best << std::endl;
 
 	return 0;
 }
