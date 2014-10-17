@@ -11,10 +11,15 @@ typedef std::tuple<std::size_t, std::size_t> CompactFactor;
 typedef std::vector<CompactFactor> CompactFactors;
 
 const std::vector<std::size_t> generate_primes(std::size_t limit);
+
 std::size_t sum_primes(std::size_t limit);
+
 bool factorize(size_t number, const Primes &primes, Factors &factors);
+
 std::vector<std::size_t> factorize(std::size_t number, const Primes &primes);
+
 std::vector< std::tuple<size_t, size_t> > factorize_compact(size_t number, const Primes &primes);
+
 bool factorize_compact(size_t number, const Primes &primes, CompactFactors &factors);
 
 #endif
