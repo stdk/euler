@@ -40,6 +40,19 @@ std::chrono::milliseconds measure(std::function<void()> callback) {
     return std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 }
 
+class Measure {
+	std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
+public:
+	void reset() {
+		begin = std::chrono::high_resolution_clock::now();
+	}
+
+	size_t passed() const {
+		auto now = std::chrono::high_resolution_clock::now();
+		return std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
+	}
+};
+
 template<class InputIterator>
 std::string join(const std::string &delim, InputIterator begin, InputIterator end) {
 	std::ostringstream out;

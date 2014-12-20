@@ -10,10 +10,17 @@ typedef std::vector<std::size_t> Factors;
 typedef std::tuple<std::size_t, std::size_t> CompactFactor;
 typedef std::vector<CompactFactor> CompactFactors;
 
-std::tuple<const Primes, const std::vector<bool>> generate_primes_state(size_t limit);
+std::tuple<const Primes, const std::vector<bool>> generate_primes_state(std::size_t limit);
 const std::vector<std::size_t> generate_primes_vector(std::size_t limit);
+const std::vector<bool> generate_primes_presence(std::size_t limit);
 
 std::size_t sum_primes(std::size_t limit);
+
+inline bool prime_present(std::size_t number, const std::vector<bool> &presence) {
+	if(number == 2) return true;
+	if(number < 2 || number % 2 == 0) return false;
+	return presence[number/2 - 1];
+}
 
 bool factorize(size_t number, const Primes &primes, Factors &factors);
 

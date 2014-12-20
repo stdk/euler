@@ -1,10 +1,16 @@
 #include <primes.h>
+#include <cmath>
+#include <iostream>
 
 std::tuple<const Primes, const std::vector<bool>> generate_primes_state(size_t limit) {
 	std::vector<bool> N(limit/2 + 1, true); // 3 5 7 9 11 ...
 
 	std::vector<size_t> primes;
-	primes.reserve(500);
+
+	// see http://en.wikipedia.org/wiki/Prime-counting_function
+	//primes.reserve(1.25506*limit/log(limit));
+	primes.reserve(limit/(log(limit)-1.1));
+
 	primes.push_back(2);
 
 	for(size_t i=3; i < limit; i+=2) {
@@ -16,13 +22,25 @@ std::tuple<const Primes, const std::vector<bool>> generate_primes_state(size_t l
 		}
 	}
 
-	primes.resize(primes.size());
-
 	return std::make_tuple(std::move(primes),std::move(N));
 }
 
 const Primes generate_primes_vector(size_t limit) {
     return std::get<0>(generate_primes_state(limit));
+}
+
+const std::vector<bool> generate_primes_presence(size_t limit) {
+	std::vector<bool> N(limit/2 + 1, true); // 3 5 7 9 11 ...
+
+	for(size_t i=3; i < limit; i+=2) {
+		if(N[i/2 - 1]) {
+			for(size_t j=3*i;j<limit;j+=2*i) {
+				N[j/2 - 1] = false;
+			}
+		}
+	}
+
+	return N;
 }
 
 std::size_t sum_primes(std::size_t limit) {
