@@ -2,25 +2,58 @@
 #include <cmath>
 #include <iostream>
 
-std::tuple<const Primes, const std::vector<bool>> generate_primes_state(size_t limit) {
-	std::vector<bool> N(limit/2 + 1, true); // 3 5 7 9 11 ...
-
-	std::vector<size_t> primes;
+std::tuple<const Primes, const PrimePresence> generate_primes_state(const size_t limit) {
+	std::vector<size_t> primes(limit/(log(limit)-1.1));
 
 	// see http://en.wikipedia.org/wiki/Prime-counting_function
 	//primes.reserve(1.25506*limit/log(limit));
-	primes.reserve(limit/(log(limit)-1.1));
+	//primes.reserve(limit/(log(limit)-1.1));
 
-	primes.push_back(2);
+	auto prime = primes.begin();
+	*prime++ = 2;
+	*prime++ = 3;
 
-	for(size_t i=3; i < limit; i+=2) {
-		if(N[i/2 - 1]) {
-			for(size_t j=3*i;j<limit;j+=2*i) {
-				N[j/2 - 1] = false;
+	// 5 7 11 13 17 19 23 25 29 31 35 37 41 43 47 49 53 55 59 61 65 67 ...
+	// 0 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21
+	// only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
+	std::vector<bool> N(limit/3 + 1, true);
+
+	for(size_t i=1; i < limit/6; i++) {
+		if(N[2*i - 2]) {
+			const size_t p = 6*i-1;
+			const size_t upper = limit/6 + i + 1;
+			const size_t lower = limit/6 - i + 1;
+			size_t j = p;
+			while(j<lower) {
+				N[(j-i)*2-1] = false;
+				N[(j+i-1)*2] = false;
+				j+=p;
 			}
-			primes.push_back(i);
+			while(j<upper) {
+				N[(j-i)*2-1] = false;
+				j+=p;
+			}
+			*prime++ = p;
+		}
+		if(N[2*i - 1]) {
+			const size_t p = 6*i+1;
+			const size_t upper = limit/6 + i + 1;
+			const size_t lower = limit/6 - i + 1;
+			size_t j = p;
+			while(j<lower) {
+				N[(j-i-1)*2] = false;
+				N[(j+i)*2-1] = false;
+				j+=p;
+			}
+			while(j<upper) {
+				N[(j-i-1)*2] = false;
+				j+=p;
+			}
+			*prime++ = p;
 		}
 	}
+
+	primes.resize(prime - primes.begin());
 
 	return std::make_tuple(std::move(primes),std::move(N));
 }
@@ -29,13 +62,41 @@ const Primes generate_primes_vector(size_t limit) {
     return std::get<0>(generate_primes_state(limit));
 }
 
-const std::vector<bool> generate_primes_presence(size_t limit) {
-	std::vector<bool> N(limit/2 + 1, true); // 3 5 7 9 11 ...
+const PrimePresence generate_primes_presence(const size_t limit) {
+	// 5 7 11 13 17 19 23 25 29 31 35 37 41 43 47 49 53 55 59 61 65 67 ...
+	// 0 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21
+	// only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
+	std::vector<bool> N(limit/3 + 1, true);
 
-	for(size_t i=3; i < limit; i+=2) {
-		if(N[i/2 - 1]) {
-			for(size_t j=3*i;j<limit;j+=2*i) {
-				N[j/2 - 1] = false;
+	for(size_t i=1; i < limit/6; i++) {
+		if(N[2*i - 2]) {
+			const size_t p = 6*i-1;
+			const size_t upper = limit/6 + i + 1;
+			const size_t lower = limit/6 - i + 1;
+			size_t j = p;
+			while(j<lower) {
+				N[(j-i)*2-1] = false;
+				N[(j+i-1)*2] = false;
+				j+=p;
+			}
+			while(j<upper) {
+				N[(j-i)*2-1] = false;
+				j+=p;
+			}
+		}
+		if(N[2*i - 1]) {
+			const size_t p = 6*i+1;
+			const size_t upper = limit/6 + i + 1;
+			const size_t lower = limit/6 - i + 1;
+			size_t j = p;
+			while(j<lower) {
+				N[(j-i-1)*2] = false;
+				N[(j+i)*2-1] = false;
+				j+=p;
+			}
+			while(j<upper) {
+				N[(j-i-1)*2] = false;
+				j+=p;
 			}
 		}
 	}
