@@ -7,21 +7,6 @@ uint64_t hexagonal_number(size_t n) {
 	return n*(2*n-1);
 }
 
-int64_t perfect_square_root(int64_t x) {
-	if(x < 0) return -1;
-	if(x < 2) return x;
-	int64_t a = x;
-	int64_t b = x/2;
-	while(a > b) {
-		a = b;
-		b = (a + x/b)/2;
-	}
-	if(b*b == x) {
-		return b;
-	}
-	return -1;
-}
-
 bool is_triangle_number(uint64_t x) {
 	int64_t d = perfect_square_root(8*x+1);
 	if(-1 == d) return false;

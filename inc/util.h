@@ -10,6 +10,7 @@
 #include <functional>
 #include <memory>
 #include <cstdio>
+#include <cstdint>
 
 using UniqueIostreamPtr = std::unique_ptr<std::istream,std::function<void(std::istream*)>>;
 
@@ -76,6 +77,21 @@ char *itoa(T num, char (&buffer)[N], size_t radix=10) {
     }
     if(out != buffer && minus) *--out='-';
     return out;
+}
+
+int64_t perfect_square_root(int64_t x) {
+	if(x < 0) return -1;
+	if(x < 2) return x;
+	int64_t a = x;
+	int64_t b = x/2;
+	while(a > b) {
+		a = b;
+		b = (a + x/b)/2;
+	}
+	if(b*b == x) {
+		return b;
+	}
+	return -1;
 }
 
 #endif
