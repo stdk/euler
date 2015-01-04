@@ -8,8 +8,8 @@
 
 #include <primes.h>
 
-
-static bool satisfies(const std::vector<size_t> &decomposition) {
+template<class Factorization>
+static bool satisfies(const Factorization &decomposition) {
     size_t a = *decomposition.rbegin();
     size_t b = 1;
     const size_t limit = 1000;
@@ -27,7 +27,8 @@ static bool satisfies(const std::vector<size_t> &decomposition) {
     return a > 100 && a < limit && b > 100 && b < limit;    
 }
 
-void check_palindromes(const std::vector<size_t> &primes) {
+template<class Primes>
+void check_palindromes(const Primes &primes) {
     const size_t max_digit = 9;
     std::array<size_t, 3> factors;
     factors.fill(max_digit);
@@ -65,11 +66,6 @@ void check_palindromes(const std::vector<size_t> &primes) {
         }
     }
 }
-
-
-
-
-
 
 int main() {
     auto primes = generate_primes_vector(10000);
