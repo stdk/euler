@@ -17,7 +17,7 @@ size_t circular_shift(size_t number, size_t digits, size_t base=10) {
 }
 
 template<class Presence>
-bool is_circular(size_t prime, Presence presence) {
+bool is_circular(size_t prime, const Presence &presence) {
 	size_t digits = digit_count(prime);
 
 	for(size_t i=0;i<digits-1;i++) {
