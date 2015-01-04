@@ -16,13 +16,13 @@ size_t circular_shift(size_t number, size_t digits, size_t base=10) {
 	return high*(number % base) + number / 10;
 }
 
-bool is_circular(size_t prime, std::vector<bool> presence) {
+template<class Presence>
+bool is_circular(size_t prime, Presence presence) {
 	size_t digits = digit_count(prime);
 
 	for(size_t i=0;i<digits-1;i++) {
 		prime = circular_shift(prime,digits);
-		if(prime % 2 == 0) return false;
-		if(!presence[prime/2 - 1]) return false;
+		if(!prime_present(prime,presence)) return false;
 	}
 
 	return true;
