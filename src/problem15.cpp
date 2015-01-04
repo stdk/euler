@@ -1,9 +1,10 @@
 #include <iostream>
 #include <primes.h>
+#include <cstdint>
 
-size_t path_count(size_t square_side_length) {
-    size_t sum = 1;
-    size_t current = 1;
+uint64_t path_count(size_t square_side_length) {
+	uint64_t sum = 1;
+	uint64_t current = 1;
     
     std::cout << current << " ";
     for(size_t i=0;i<square_side_length;i++) {
