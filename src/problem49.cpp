@@ -52,15 +52,6 @@ bool next_digit_permutation(uint32_t &number) {
 	return true;
 }
 
-//find next k-combination
-bool next_combination(uint32_t &x, uint32_t mask) {
-	uint32_t u = x & -x; // extract rightmost bit 1
-	uint32_t v = u + x; // set last non-trailing bit 0 and clear to the right
-	if((v&mask) == 0) return false; // overflow i v or x==0
-	x = v + (((v^x)/u)>>2);
-	return true;
-}
-
 template<class Sequence>
 bool is_correct_sequence(Sequence &sequence) {
 	if(sequence.size() < 3) return false;
