@@ -5,6 +5,7 @@
 bool prime_present(prime_t number, const PrimePresence &presence) {
 	if(number < 2) return false;
 	if(number < 4) return true;
+	if(number/6*2>presence.size()) return false;
 	prime_t remainder = number % 6;
 	if(5 == remainder) {
 		return presence[number/6*2];
@@ -18,6 +19,7 @@ bool prime_present(prime_t number, const PrimePresence &presence) {
 bool exclude_prime(prime_t number, PrimePresence &presence) {
 	if(number < 2) return false;
 	if(number < 4) return false;
+	if(number/6*2>presence.size()) return false;
 	prime_t remainder = number % 6;
 	if(5 == remainder) {
 		if(presence[number/6*2]) {
