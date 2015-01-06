@@ -7,18 +7,6 @@
 #include <type_traits>
 #include <cstdint>
 
-template<size_t x,size_t a, size_t b>
-struct power_impl : power_impl<x*a,a,b-1> {};
-
-template<size_t x,size_t a>
-struct power_impl<x,a,0> : std::integral_constant<size_t,1> {};
-
-template<size_t x,size_t a>
-struct power_impl<x,a,1> : std::integral_constant<size_t,x> {};
-
-template<size_t a,size_t b>
-struct power : power_impl<a,a,b> {};
-
 template<size_t base>
 prime_t fill_by_mask(uint32_t pattern, uint32_t mask, uint32_t filler) {
 	size_t order = 1;

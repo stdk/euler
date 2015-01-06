@@ -103,4 +103,16 @@ bool next_combination(uint32_t &x, uint32_t mask) {
 	return true;
 }
 
+template<size_t x,size_t a, size_t b>
+struct power_impl : power_impl<x*a,a,b-1> {};
+
+template<size_t x,size_t a>
+struct power_impl<x,a,0> : std::integral_constant<size_t,1> {};
+
+template<size_t x,size_t a>
+struct power_impl<x,a,1> : std::integral_constant<size_t,x> {};
+
+template<size_t a,size_t b>
+struct power : power_impl<a,a,b> {};
+
 #endif
