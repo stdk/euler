@@ -1,10 +1,8 @@
 #include <iostream>
-#include <bitset>
 #include <vector>
 #include <algorithm>
 #include <primes.h>
 #include <util.h>
-#include <type_traits>
 #include <cstdint>
 
 template<size_t base>
