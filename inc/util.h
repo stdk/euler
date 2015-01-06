@@ -8,6 +8,7 @@
 #include <sstream>
 #include <chrono>
 #include <functional>
+#include <type_traits>
 #include <memory>
 #include <cstdio>
 #include <cstdint>
