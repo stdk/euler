@@ -113,6 +113,6 @@ template<size_t x,size_t a>
 struct power_impl<x,a,1> : std::integral_constant<size_t,x> {};
 
 template<size_t a,size_t b>
-struct power : power_impl<a,a,b> {};
+using power = power_impl<a,a,b>;
 
 #endif
