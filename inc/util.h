@@ -63,21 +63,50 @@ std::string join(const std::string &delim, InputIterator begin, InputIterator en
 	return out.str();
 }
 
+
+template<class T, size_t N, class Enable=void>
+struct itoa_impl {
+	static_assert(std::is_integral<T>::value == true,"This function accepts only integers");
+};
+
 template<class T, size_t N>
-char *itoa(T num, char (&buffer)[N], size_t radix=10) {
-    char *out = buffer + N;
-    bool minus = std::signbit(num);
-    num = std::abs(num);
-    *--out = 0;
-    if(num) {
-        for(; out != buffer && num; num/=radix) {
-            *--out = "0123456789ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstyvwxyz"[num % radix];
-        }
-    } else {
-        *--out='0';
-    }
-    if(out != buffer && minus) *--out='-';
-    return out;
+struct itoa_impl<T,N,typename std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value>::type> {
+	static char *itoa(T num, char (&buffer)[N], size_t radix) {
+	    char *out = buffer + N;
+	    bool minus = std::signbit(num);
+	    num = std::abs(num);
+	    *--out = 0;
+	    if(num) {
+	        for(; out != buffer && num; num/=radix) {
+	            *--out = "0123456789ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstyvwxyz"[num % radix];
+	        }
+	    } else {
+	        *--out='0';
+	    }
+	    if(out != buffer && minus) *--out='-';
+	    return out;
+	}
+};
+
+template<class T, size_t N>
+struct itoa_impl<T,N,typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type> {
+	static char *itoa(T num, char (&buffer)[N], size_t radix) {
+		char *out = buffer + N;
+		*--out = 0;
+		if(num) {
+			for(; out != buffer && num; num/=radix) {
+				*--out = "0123456789ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstyvwxyz"[num % radix];
+			}
+		} else {
+			*--out='0';
+		}
+		return out;
+	}
+};
+
+template<class T,size_t N>
+inline char *itoa(T num, char (&buffer)[N], size_t radix=10) {
+	return itoa_impl<T,N>::itoa(num,buffer,radix);
 }
 
 int64_t perfect_square_root(int64_t x) {
@@ -104,8 +133,9 @@ bool next_combination(uint32_t &x, uint32_t mask) {
 	return true;
 }
 
-uint32_t reverse_digits(uint32_t number) {
-	uint32_t result = 0;
+template<typename T>
+T reverse_digits(T number) {
+	T result = 0;
 	while(number) {
 		result = result*10 + number % 10;
 		number /= 10;
