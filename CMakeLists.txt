@@ -74,3 +74,5 @@ add_executable(problem52 "src/problem52.cpp")
 add_executable(problem53 "src/problem53.cpp")
 
 add_executable(problem54 "src/problem54.cpp")
+
+add_executable(problem55 "src/problem55.cpp")
