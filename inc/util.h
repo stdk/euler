@@ -104,6 +104,15 @@ bool next_combination(uint32_t &x, uint32_t mask) {
 	return true;
 }
 
+uint32_t reverse_digits(uint32_t number) {
+	uint32_t result = 0;
+	while(number) {
+		result = result*10 + number % 10;
+		number /= 10;
+	}
+	return result;
+}
+
 template<size_t x,size_t a, size_t b>
 struct power_impl : power_impl<x*a,a,b-1> {};
 

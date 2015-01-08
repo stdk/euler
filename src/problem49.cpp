@@ -5,15 +5,6 @@
 #include <cstdint>
 #include <bitset>
 
-uint32_t reverse_digits(uint32_t number) {
-	uint32_t result = 0;
-	while(number) {
-		result = result*10 + number % 10;
-		number /= 10;
-	}
-	return result;
-}
-
 bool next_digit_permutation(uint32_t &number) {
 	if(!number) return false; // no elements
 	if(number < 10) return false; // single element
