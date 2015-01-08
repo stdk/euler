@@ -76,3 +76,6 @@ add_executable(problem53 "src/problem53.cpp")
 add_executable(problem54 "src/problem54.cpp")
 
 add_executable(problem55 "src/problem55.cpp")
+
+add_executable(problem56 "src/problem56.cpp")
+target_link_libraries(problem56 gmp gmpxx)
