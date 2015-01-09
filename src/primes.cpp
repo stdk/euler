@@ -51,37 +51,47 @@ std::tuple<Primes, PrimePresence> generate_primes_state(prime_t limit) {
 	// only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
 	PrimePresence N(limit/3 + 1, true);
 
-	for(prime_t i=1; i < limit/6; i++) {
+	const prime_t bound = limit/3;
+	const prime_t iteration_limit = sqrt(limit)/6 + 1;
+	prime_t i = 1;
+	for(;i < iteration_limit; i++) {
 		if(N[2*i - 2]) {
 			const prime_t p = 6*i-1;
-			const prime_t upper = limit/6 + i + 1;
-			const prime_t lower = limit/6 - i + 1;
-			prime_t j = p;
-			while(j<lower) {
-				N[(j-i)*2-1] = false;
-				N[(j+i-1)*2] = false;
-				j+=p;
+			const prime_t diff = 2*p;
+			prime_t j1 = p*p/6*2 - 1;
+			prime_t j2 = j1 + 4*i - 1;
+			for(;j2 < bound;j1+=diff,j2+=diff) {
+				N[j1] = false;
+				N[j2] = false;
 			}
-			while(j<upper) {
-				N[(j-i)*2-1] = false;
-				j+=p;
+			for(;j1 < bound;j1+=diff) {
+				N[j1] = false;
 			}
 			*prime++ = p;
 		}
 		if(N[2*i - 1]) {
 			const prime_t p = 6*i+1;
-			const prime_t upper = limit/6 + i + 1;
-			const prime_t lower = limit/6 - i + 1;
-			prime_t j = p;
-			while(j<lower) {
-				N[(j-i-1)*2] = false;
-				N[(j+i)*2-1] = false;
-				j+=p;
+			const prime_t diff = 2*p;
+			prime_t j2 = p*p/6*2 - 1;
+			prime_t j1 = j2 - 4*i - 1;
+			for(;j2 < bound;j1+=diff,j2+=diff) {
+				N[j1] = false;
+				N[j2] = false;
 			}
-			while(j<upper) {
-				N[(j-i-1)*2] = false;
-				j+=p;
+			for(;j1 < bound;j1+=diff) {
+				N[j1] = false;
 			}
+			*prime++ = p;
+		}
+	}
+
+	for(;i<limit/6+1;i++) {
+		if(N[2*i - 2]) {
+			const prime_t p = 6*i-1;
+			*prime++ = p;
+		}
+		if(N[2*i - 1]) {
+			const prime_t p = 6*i+1;
 			*prime++ = p;
 		}
 	}
@@ -101,93 +111,33 @@ PrimePresence generate_primes_presence(prime_t limit) {
 	// only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
 	PrimePresence N(limit/3 + 1, true);
 
-	const prime_t bound = limit/6;
-
-	for(prime_t i=1; i < bound; i++) {
-		const bool a = N[2*i - 2];
-		const bool b = N[2*i - 1];
-		if(a && b) {
-			const prime_t p1 = 6*i-1;
-			const prime_t p2 = 6*i+1;
-			const prime_t upper = bound + i + 1;
-			const prime_t lower = bound - i + 1;
-			prime_t j1 = p1,j2 = p2;
-			while(j1<lower && j2<lower) {
-				N[(j1-i)*2-1] = false;
-				N[(j1+i-1)*2] = false;
-
-				N[(j2-i-1)*2] = false;
-				N[(j2+i)*2-1] = false;
-
-				j1+=p1;
-				j2+=p2;
-			}
-
-			while(j1<lower && j2<upper) {
-				N[(j1-i)*2-1] = false;
-				N[(j1+i-1)*2] = false;
-
-				N[(j2-i-1)*2] = false;
-
-				j1+=p1;
-				j2+=p2;
-			}
-
-			while(j1<upper && j2<lower) {
-				N[(j1-i)*2-1] = false;
-
-				N[(j2-i-1)*2] = false;
-				N[(j2+i)*2-1] = false;
-
-				j1+=p1;
-				j2+=p2;
-			}
-
-			while(j1<upper && j2 < upper) {
-				N[(j1-i)*2-1] = false;
-
-				N[(j2-i-1)*2] = false;
-
-				j1+=p1;
-				j2+=p2;
-			}
-
-			while(j1<upper) {
-				N[(j1-i)*2-1] = false;
-				j1+=p1;
-			}
-
-			while(j2<upper) {
-				N[(j2-i-1)*2] = false;
-				j2+=p2;
-			}
-		} else if(a) {
+	const prime_t bound = limit/3;
+	const prime_t iteration_limit = sqrt(limit)/6 + 1;
+	for(prime_t i = 1;i < iteration_limit; i++) {
+		if(N[2*i - 2]) {
 			const prime_t p = 6*i-1;
-			const prime_t upper = bound + i + 1;
-			const prime_t lower = bound - i + 1;
-			prime_t j = p;
-			while(j<lower) {
-				N[(j-i)*2-1] = false;
-				N[(j+i-1)*2] = false;
-				j+=p;
+			const prime_t diff = 2*p;
+			prime_t j1 = p*p/6*2 - 1;
+			prime_t j2 = j1 + 4*i - 1;
+			for(;j2 < bound;j1+=diff,j2+=diff) {
+				N[j1] = false;
+				N[j2] = false;
 			}
-			while(j<upper) {
-				N[(j-i)*2-1] = false;
-				j+=p;
+			for(;j1 < bound;j1+=diff) {
+				N[j1] = false;
 			}
-		} else if(b) {
+		}
+		if(N[2*i - 1]) {
 			const prime_t p = 6*i+1;
-			const prime_t upper = bound + i + 1;
-			const prime_t lower = bound - i + 1;
-			prime_t j = p;
-			while(j<lower) {
-				N[(j-i-1)*2] = false;
-				N[(j+i)*2-1] = false;
-				j+=p;
+			const prime_t diff = 2*p;
+			prime_t j2 = p*p/6*2 - 1;
+			prime_t j1 = j2 - 4*i - 1;
+			for(;j2 < bound;j1+=diff,j2+=diff) {
+				N[j1] = false;
+				N[j2] = false;
 			}
-			while(j<upper) {
-				N[(j-i-1)*2] = false;
-				j+=p;
+			for(;j1 < bound;j1+=diff) {
+				N[j1] = false;
 			}
 		}
 	}
@@ -216,35 +166,5 @@ bool factorize(prime_t number, const Primes &primes, Factors &factors) {
 Factors factorize(prime_t number, const Primes &primes) {
     Factors factors;
     factorize(number, primes, factors);
-    return factors;    
-}
-
-bool factorize_compact(prime_t number, const Primes &primes, CompactFactors &factors) {
-    factors.clear();
-    
-    if(number == 1) {
-        return true;
-    }
-    
-    for(auto prime: primes) {
-    	uint64_t count = 0;
-        while(number % prime == 0) {
-            number /= prime;
-            count++;
-        }
-        if(count) {
-            factors.push_back(std::make_tuple(prime, count));
-            if(number == 1) {
-                return true;
-            }
-        }
-    }
-    
-    return false;
-}
-
-CompactFactors factorize_compact(prime_t number, const Primes &primes) {
-    CompactFactors factors;
-    factorize_compact(number, primes, factors);
     return factors;    
 }

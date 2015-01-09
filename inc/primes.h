@@ -24,8 +24,35 @@ bool exclude_prime(prime_t number, PrimePresence &presence);
 bool factorize(prime_t number, const Primes &primes, Factors &factors);
 Factors factorize(prime_t number, const Primes &primes);
 
-CompactFactors factorize_compact(prime_t number, const Primes &primes);
-bool factorize_compact(prime_t number, const Primes &primes, CompactFactors &factors);
+template<class P>
+void factorize_compact(uint64_t number, const P &primes, CompactFactors &factors) {
+    factors.clear();
+
+    if(number == 1) return;
+
+    for(auto prime: primes) {
+    	size_t count = 0;
+        while(number % prime == 0) {
+            number /= prime;
+            count++;
+        }
+        if(count) {
+            factors.push_back(std::make_tuple(prime, count));
+            if(number == 1) return;
+        }
+    }
+
+    if(number > *primes.rbegin()) {
+    	factors.push_back(std::make_tuple(number,1));
+    }
+}
+
+template<class P>
+CompactFactors factorize_compact(uint64_t number, const P &primes) {
+    CompactFactors factors;
+    factorize_compact(number, primes, factors);
+    return factors;
+}
 
 class PrimeNumbers
 {
