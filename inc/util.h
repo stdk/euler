@@ -143,6 +143,24 @@ T reverse_digits(T number) {
 	return result;
 }
 
+size_t digit_count(size_t number, size_t base=10) {
+	size_t count = 0;
+	while(number) {
+		++count;
+		number /= base;
+	}
+	return count;
+}
+
+size_t num_order(size_t number, size_t base=10) {
+	size_t order = 1;
+	while(number) {
+		order *= base;
+		number /= base;
+	}
+	return order;
+}
+
 template<size_t x,size_t a, size_t b>
 struct power_impl : power_impl<x*a,a,b-1> {};
 

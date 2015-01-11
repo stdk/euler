@@ -1,14 +1,6 @@
 #include <iostream>
 #include <primes.h>
-
-size_t digit_count(size_t number, size_t base=10) {
-	size_t count = 0;
-	while(number) {
-		++count;
-		number /= base;
-	}
-	return count;
-}
+#include <util.h>
 
 size_t circular_shift(size_t number, size_t digits, size_t base=10) {
 	size_t high = 1;
