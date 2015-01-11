@@ -86,3 +86,5 @@ target_link_libraries(problem57 gmp gmpxx)
 add_executable(problem58 "src/problem58.cpp" "src/primes.cpp")
 
 add_executable(problem59 "src/problem59.cpp")
+
+add_executable(problem60 "src/problem60.cpp" "src/primes.cpp")
