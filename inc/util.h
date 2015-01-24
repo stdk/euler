@@ -116,9 +116,25 @@ int64_t perfect_square_root(int64_t x) {
 	int64_t b = x/2;
 	while(a > b) {
 		a = b;
-		b = (a + x/b)/2;
+		b = (b + x/b)/2;
 	}
 	if(b*b == x) {
+		return b;
+	}
+	return -1;
+}
+
+int64_t perfect_cubic_root(int64_t x) {
+	if(x < 0) return -1;
+	if(x < 2) return x;
+	if(x < 8) return -1;
+	int64_t a = x;
+	int64_t b = x/3;
+	while(a > b) {
+		a = b;
+		b = (2*b + x/b/b)/3;
+	}
+	if(b*b*b == x) {
 		return b;
 	}
 	return -1;
