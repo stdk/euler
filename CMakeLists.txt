@@ -92,3 +92,5 @@ add_executable(problem59 "src/problem59.cpp")
 add_executable(problem60 "src/problem60.cpp" "src/primes.cpp")
 
 add_executable(problem61 "src/problem61.cpp")
+
+add_executable(problem62 "src/problem62.cpp")
