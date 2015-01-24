@@ -20,6 +20,8 @@ TEST_CASE( "digit_deconstruct", "[digit_deconstruct]") {
 	REQUIRE(digit_deconstruct(0b1010101010,2) == std::vector<uint32_t>({1,0,1,0,1,0,1,0,1,0}));
 	REQUIRE(digit_deconstruct(1234567890) == std::vector<uint32_t>({1,2,3,4,5,6,7,8,9,0}));
 	REQUIRE(digit_deconstruct(0xABCDEF,16) == std::vector<uint32_t>({0xA,0xB,0xC,0xD,0xE,0xF}));
+	REQUIRE(digit_deconstruct(101782150309ul) == std::vector<uint32_t>({1,0,1,7,8,2,1,5,0,3,0,9}));
+
 }
 
 TEST_CASE( "digit_reconstruct", "[digit_reconstruct]") {
