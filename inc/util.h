@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <vector>
 #include <sstream>
 #include <chrono>
 #include <functional>
@@ -159,13 +160,33 @@ T reverse_digits(T number) {
 	return result;
 }
 
-size_t digit_count(size_t number, size_t base=10) {
+size_t digit_count(uint32_t number, uint32_t base=10) {
+	if(!number) return 1;
 	size_t count = 0;
 	while(number) {
 		++count;
 		number /= base;
 	}
 	return count;
+}
+
+std::vector<uint32_t> digit_deconstruct(uint64_t number, uint32_t base=10) {
+	std::vector<uint32_t> digits(digit_count(number,base));
+	auto i = digits.rbegin();
+	while(number) {
+		*i++ = number%base;
+		number /= base;
+	}
+	return digits;
+}
+
+template<class T>
+uint64_t digit_reconstruct(const std::vector<T> &digits, uint32_t base=10) {
+	uint64_t number = 0;
+	for(auto i=digits.begin();i!=digits.end();i++) {
+		number = number*base + *i;
+	}
+	return number;
 }
 
 size_t num_order(size_t number, size_t base=10) {
