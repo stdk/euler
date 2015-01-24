@@ -4,8 +4,34 @@
 #include <vector>
 #include <util.h>
 
+TEST_CASE( "digit_count", "[digit_count]" ) {
+	REQUIRE(digit_count(0) == 1);
+	REQUIRE(digit_count(1) == 1);
+	REQUIRE(digit_count(10) == 2);
+	REQUIRE(digit_count(123456790) == 9);
+	REQUIRE(digit_count(01234567,8) == 7);
+	REQUIRE(digit_count(0b1010101010,2) == 10);
+	REQUIRE(digit_count(0xABCDEF,16) == 6);
+}
+
+TEST_CASE( "digit_deconstruct", "[digit_deconstruct]") {
+	REQUIRE(digit_deconstruct(0) == std::vector<uint32_t>({0}));
+	REQUIRE(digit_deconstruct(01234567,8) == std::vector<uint32_t>({1,2,3,4,5,6,7}));
+	REQUIRE(digit_deconstruct(0b1010101010,2) == std::vector<uint32_t>({1,0,1,0,1,0,1,0,1,0}));
+	REQUIRE(digit_deconstruct(1234567890) == std::vector<uint32_t>({1,2,3,4,5,6,7,8,9,0}));
+	REQUIRE(digit_deconstruct(0xABCDEF,16) == std::vector<uint32_t>({0xA,0xB,0xC,0xD,0xE,0xF}));
+}
+
+TEST_CASE( "digit_reconstruct", "[digit_reconstruct]") {
+	REQUIRE(digit_reconstruct(std::vector<uint32_t>({0})) == 0);
+	REQUIRE(digit_reconstruct(std::vector<uint32_t>({1,2,3,4,5,6,7}),8) == 01234567);
+	REQUIRE(digit_reconstruct(std::vector<uint32_t>({1,0,1,0,1,0,1,0,1,0}),2) == 0b1010101010);
+	REQUIRE(digit_reconstruct(std::vector<uint32_t>({1,2,3,4,5,6,7,8,9,0})) == 1234567890);
+	REQUIRE(digit_reconstruct(std::vector<uint32_t>({0xA,0xB,0xC,0xD,0xE,0xF}),16) == 0xABCDEF);
+}
+
 TEST_CASE( "perfect_square_root", "[perfect_square_root]" ) {
-	const size_t limit = 100;
+	const size_t limit = 10000;
 
 	std::vector<bool> n(limit,false);
 	n[0] = true;
@@ -23,7 +49,7 @@ TEST_CASE( "perfect_square_root", "[perfect_square_root]" ) {
 }
 
 TEST_CASE( "perfect_cubic_root", "[perfect_cubic_root]" ) {
-	const size_t limit = 100000;
+	const size_t limit = 10000;
 
 	std::vector<bool> n(limit,false);
 	n[0] = true;
