@@ -160,7 +160,7 @@ T reverse_digits(T number) {
 	return result;
 }
 
-size_t digit_count(uint32_t number, uint32_t base=10) {
+size_t digit_count(uint64_t number, uint32_t base=10) {
 	if(!number) return 1;
 	size_t count = 0;
 	while(number) {
