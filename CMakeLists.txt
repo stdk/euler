@@ -12,6 +12,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 include_directories("inc")
 
+add_executable(test_suite "test/main.cpp")
+
 add_executable(problem4 "src/problem4.cpp" "src/primes.cpp")
 
 add_executable(problem11 "src/problem11.cpp")
