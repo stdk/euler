@@ -13,6 +13,10 @@
 #include <memory>
 #include <cstdio>
 #include <cstdint>
+#include <cstdlib>
+
+const char *test_mode_str = std::getenv("TEST_MODE");
+const bool test_mode = test_mode_str ? std::string(test_mode_str) == "1" : false;
 
 using UniqueIostreamPtr = std::unique_ptr<std::istream,std::function<void(std::istream*)>>;
 
@@ -108,6 +112,14 @@ struct itoa_impl<T,N,typename std::enable_if<std::is_integral<T>::value && std::
 template<class T,size_t N>
 inline char *itoa(T num, char (&buffer)[N], size_t radix=10) {
 	return itoa_impl<T,N>::itoa(num,buffer,radix);
+}
+
+template<typename T>
+std::string to_string(const T& n)
+{
+	std::ostringstream stream;
+	stream << n;
+	return stream.str();
 }
 
 int64_t perfect_square_root(int64_t x) {

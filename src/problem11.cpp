@@ -6,6 +6,7 @@
 #include <vector>
 #include <numeric>
 #include <functional>
+#include <util.h>
 
 const char* in ="\
 08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08\n\
@@ -29,53 +30,56 @@ const char* in ="\
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54\n\
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48\n";
 
-
 int main() {
+	std::ios_base::sync_with_stdio(false);
+
     std::istringstream stream(in);
-        
+
     std::vector<size_t> numbers;
     size_t line_size = 0;
-    
+
     while(!stream.eof()) {
         std::string line;
         std::getline(stream, line);
         std::istringstream line_stream(line);
-                
+
         while(!line_stream.eof()) {
             size_t n;
             line_stream >> n;
             if(line_stream) {
-                numbers.push_back(n);        
+                numbers.push_back(n);
             }
         }
         if(!line_size) {
-            line_size = numbers.size();            
-        }
-    }    
-    
-    std::cout.fill('0');
-    for(size_t i=0;i<numbers.size();i++) {
-        std::cout << std::setw(2) << numbers[i] << " ";        
-        if((i+1) % line_size == 0) {
-            std::cout << "\n";   
+            line_size = numbers.size();
         }
     }
-    
+
+    if(!test_mode) {
+		std::cout.fill('0');
+		for(size_t i=0;i<numbers.size();i++) {
+			std::cout << std::setw(2) << numbers[i] << " ";
+			if((i+1) % line_size == 0) {
+				std::cout << "\n";
+			}
+		}
+    }
+
     size_t max = 0;
-    
+
     const size_t adjacent_numbers = 4;
     const size_t lines = numbers.size() / line_size;
-    
+
     for(size_t i=0;i<lines;i++) {
         for(size_t j=0;j<line_size - (adjacent_numbers - 1);j++) {
             size_t idx = i*line_size + j;
             size_t product = std::accumulate(&numbers[idx],&numbers[idx]+adjacent_numbers, (size_t)1, std::multiplies<size_t>());
             if(product > max) {
                 max = product;
-            }            
+            }
         }
     }
-    
+
     for(size_t i=0;i<lines - ((adjacent_numbers - 1));i++) {
         for(size_t j=0;j<line_size;j++) {
             size_t current_product = 1;
@@ -84,10 +88,10 @@ int main() {
             }
             if(current_product > max) {
                 max = current_product;
-            }            
+            }
         }
-    }    
-    
+    }
+
     for(size_t i=0;i<lines - (adjacent_numbers - 1);i++) {
         for(size_t j=0;j<line_size - (adjacent_numbers - 1);j++) {
             size_t current_product_a = 1;
@@ -101,10 +105,10 @@ int main() {
             }
             if(current_product_b > max) {
                 max = current_product_b;
-            }            
+            }
         }
     }
-    
+
     std::cout << max << std::endl;
     
     return 0;
