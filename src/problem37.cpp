@@ -16,16 +16,16 @@ size_t truncate_left(size_t prime) {
 }
 
 template<class T>
-bool is_truncatable_prime(size_t prime, T presence) {
+bool is_truncatable_prime(size_t prime, const T &presence) {
 	size_t p = prime;
 	while(p) {
-		if(!prime_present(p,presence)) return false;
+		if(!presence[p]) return false;
 		p = truncate_right(p);
 	}
 
 	p = prime;
 	while(p) {
-		if(!prime_present(p,presence)) return false;
+		if(!presence[p]) return false;
 		p = truncate_left(p);
 	}
 
@@ -33,14 +33,12 @@ bool is_truncatable_prime(size_t prime, T presence) {
 }
 
 int main() {
-	const auto primes_state = generate_primes_state(1000000);
-	const auto& primes = std::get<0>(primes_state);
-	const auto& presence = std::get<1>(primes_state);
+	const auto &primes = PrimeNumbers(1000000);
 
 	size_t sum = 0;
 
 	for(auto i=primes.rbegin();i!=primes.rend();++i) {
-		if(*i > 10 && is_truncatable_prime(*i,presence)) {
+		if(*i > 10 && is_truncatable_prime(*i,primes)) {
 			std::cerr << *i << std::endl;
 			sum += *i;
 		}

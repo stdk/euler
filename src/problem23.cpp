@@ -3,6 +3,7 @@
 #include <tuple>
 #include <vector>
 #include <primes.h>
+#include <util.h>
 
 const size_t abundant_representable_limit = 28123;
 
@@ -18,7 +19,7 @@ size_t sum_all_divisors(const CompactFactors &factors) {
     return sum >> 1;
 }
 
-std::vector<size_t> get_abundant_numbers(size_t limit, const Primes &primes) {
+std::vector<size_t> get_abundant_numbers(size_t limit, const PrimeNumbers &primes) {
     std::vector<size_t> abundant;
 
     for(size_t i=1;i<limit;i++) {
@@ -31,7 +32,12 @@ std::vector<size_t> get_abundant_numbers(size_t limit, const Primes &primes) {
 }
 
 int main() {
-    const auto primes = generate_primes_vector(abundant_representable_limit*2);
+	Measure measure;
+	const auto &primes = PrimeNumbers(abundant_representable_limit);
+	auto passed = measure.passed();
+	std::cout << "Prime generation took " << passed << " ms" << std::endl;
+
+	measure.reset();
     const auto abundant = get_abundant_numbers(abundant_representable_limit, primes);
 
     size_t total = abundant_representable_limit*(abundant_representable_limit-1)/2;
@@ -47,6 +53,8 @@ int main() {
         }
     }
 
+    passed = measure.passed();
+    std::cout << "Processing took " << passed << " ms" << std::endl;
     std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: " << total << std::endl;
     return 0;
 }

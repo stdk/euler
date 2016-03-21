@@ -10,81 +10,6 @@
  * Odd period square roots
  */
 
-CompactFactors common_compact_factors(const CompactFactors &a, const CompactFactors &b) {
-	CompactFactors common_factors;
-
-	auto i = a.begin();
-	auto j = b.begin();
-
-	while(i!=a.end() && j != b.end()) {
-
-		auto x = std::get<0>(*i);
-		auto y = std::get<0>(*j);
-
-		if(x == y) {
-			auto count = std::min(std::get<1>(*i),std::get<1>(*j));
-			common_factors.push_back(std::make_tuple(x,count));
-			++i;
-			++j;
-		} else if(x < y) {
-			++i;
-		} else if(x > y) {
-			++j;
-		}
-
-	}
-
-	return common_factors;
-}
-
-CompactFactors common_compact_factors(const CompactFactors &a,
-                                      const CompactFactors &b,
-                                      const CompactFactors &c) {
-	CompactFactors common_factors;
-
-	auto i = a.begin();
-	auto j = b.begin();
-	auto k = c.begin();
-
-	while(i != a.end() && j != b.end() && k != c.end()) {
-		auto x = std::get<0>(*i);
-		auto y = std::get<0>(*j);
-		auto z = std::get<0>(*k);
-
-		if(x == y && y == z) {
-			auto count = std::min({std::get<1>(*i),
-				                   std::get<1>(*j),
-								   std::get<1>(*k)});
-			common_factors.push_back(std::make_tuple(x,count));
-			++i;
-			++j;
-			++k;
-		} else if(x <= y && x <= z) {
-			++i;
-		} else if(y <= x && y <= z) {
-			++j;
-		} else if(z <= x && z <= y) {
-			++k;
-		}
-	}
-
-	return common_factors;
-}
-
-std::ostream& operator<<(std::ostream &os, const CompactFactor &factor) {
-	return os << std::get<0>(factor) << "^" << std::get<1>(factor);
-}
-
-std::ostream& operator<<(std::ostream &os, const CompactFactors &factors) {
-	os << "[";
-	for(auto i=factors.begin();i!=factors.end();++i) {
-		os << *i << (i == factors.end()-1 ? "" : " * ");
-	}
-	os << "]";
-
-	return os;
-}
-
 template<class T>
 struct fraction_t {
 	T p;
@@ -139,9 +64,6 @@ template<class T>
 std::ostream& operator<<(std::ostream &os, const fraction_t<T> &fraction) {
 	return os << fraction.p << "/" << fraction.q;
 }
-
-constexpr double E = 1e-10;
-constexpr size_t MAX_ITERATIONS = 1000000;
 
 struct state {
 	const PrimeNumbers *primes;
@@ -202,10 +124,9 @@ std::ostream& operator<<(std::ostream &os, const state &s) {
 }
 
 template<class Primes>
-int64_t period_length2(uint32_t n,const Primes &primes) {
+int64_t period_length(uint32_t n,const Primes &primes) {
 	auto perfect = perfect_square_root(n);
 	if(perfect != -1) {
-		//std::cout << n << " is a perfect square of " << perfect << std::endl;
 		return 0;
 	}
 
@@ -218,51 +139,6 @@ int64_t period_length2(uint32_t n,const Primes &primes) {
 
 		if(current == initial) {
 			return i+1;
-		}
-	}
-
-	std::cout << "Processing of n = " << n << " reached iteration limit" << std::endl;
-
-	return -1;
-}
-
-int64_t period_length(uint32_t n) {
-	std::vector<uint32_t> sequence;
-
-	auto perfect = perfect_square_root(n);
-	if(perfect != -1) {
-		std::cout << n << " is a perfect square of " << perfect << std::endl;
-		return 0;
-	}
-
-	double x = std::sqrt(n);
-
-	uint32_t a = std::floor(x);
-	x -= a;
-
-	double initial_x = x;
-
-	for(size_t i=1;;++i) {
-		x = 1/x;
-		a = std::floor(x);
-		sequence.push_back(a);
-		x -= a;
-
-		if(i % 2 == 0) {
-			//auto end = sequence.begin()+i/2;
-			std::cout << "initial_x - x = " << std::abs(initial_x-x) << std::endl;
-			if(std::abs(initial_x - x) < E /*&&
-				std::equal(sequence.begin(),end,end)*/) {
-				std::cout << n << ":len = " << i/2 << std::endl;
-				/*std::cout << n << " -> (";
-				for(auto e=sequence.begin();e!=end;++e) {
-					std::cout << *e << (e==end-1 ? "" : ",");
-				}
-				std::cout << ")" << std::endl;*/
-
-
-				return i/2;
-			}
 		}
 	}
 
@@ -284,13 +160,8 @@ int main() {
 
 	size_t count = 0;
 
-	//fraction f(100,50);
-
-	//std::cout << f << "->" << f.simplify(primes) << std::endl;
-
 	for(uint32_t i=1;i<=10000;i++) {
-		auto len = period_length2(i,primes);
-		//std::cout << "Length: " << len << std::endl;
+		auto len = period_length(i,primes);
 		if(len % 2 == 1) {
 			count++;
 		}

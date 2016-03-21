@@ -75,9 +75,7 @@ int main(int argc, char **argv) {
 
 	Measure measure;
 
-	auto primes_state = generate_primes_state(limit);
-	const auto& primes = std::get<0>(primes_state);
-	auto& presence = std::get<1>(primes_state);
+	auto primes = PrimeNumbers(limit);
 
 	auto passed = measure.passed();
 	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
@@ -90,13 +88,13 @@ int main(int argc, char **argv) {
 	measure.reset();
 	for(auto i=begin;i!=end;++i) {
 		uint32_t prime = *i;
-		if(exclude_prime(prime,presence)) {
+		if(primes.exclude_prime(prime)) {
 			sequence.clear();
 			sequence.push_back(prime);
 
 			size_t primes_in_permutations = 1;
 			while(next_digit_permutation(prime)) {
-				if(exclude_prime(prime,presence)) {
+				if(primes.exclude_prime(prime)) {
 					primes_in_permutations += 1;
 					sequence.push_back(prime);
 				}

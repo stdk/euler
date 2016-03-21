@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <primes.h>
 
-size_t sequential_primes_length(const Primes &primes, int a, size_t b) {
+size_t sequential_primes_length(const PrimeNumbers &primes, int a, size_t b) {
 	auto f = [&](size_t n) -> int {
 		return a*n + n*n + b;
 	};
@@ -23,14 +23,14 @@ size_t sequential_primes_length(const Primes &primes, int a, size_t b) {
 }
 
 int main() {
-	const auto primes = generate_primes_vector(1000000);
-	auto primes_b = generate_primes_vector(1000);
-	primes_b.push_back(1);
+	const auto &primes = PrimeNumbers(1000000);
+	const auto &primes_b = PrimeNumbers(1000);
+	//primes_b.push_back(1);
 
 	long int a_best = 0;
 	long int b_best = 0;
 	size_t longest_sequence = 0;
-	for(auto b=primes_b.begin()+1;b!=primes_b.end();++b) {
+	for(auto b=primes_b.begin();b!=primes_b.end();++b) {
 		for(int a = -999;a<1000;a+=2) {
 			auto length = sequential_primes_length(primes,a,*b);
 			if(length > longest_sequence) {

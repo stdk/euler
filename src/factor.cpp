@@ -18,8 +18,7 @@ int main(int argc, char **argv) {
 	Measure measure;
 
 	const size_t limit = (size_t)sqrt(number)+1;
-	const auto primes_state = generate_primes_state(limit);
-	const auto& primes = std::get<0>(primes_state);
+	const auto &primes = PrimeNumbers(limit);
 
 	auto passed = measure.passed();
 	std::cout << "Prime generation up to " << limit << " took: " << passed << " ms" << std::endl;

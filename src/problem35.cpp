@@ -14,21 +14,19 @@ bool is_circular(size_t prime, const Presence &presence) {
 
 	for(size_t i=0;i<digits-1;i++) {
 		prime = circular_shift(prime,digits);
-		if(!prime_present(prime,presence)) return false;
+		if(!presence[prime]) return false;
 	}
 
 	return true;
 }
 
 int main() {
-	const auto primes_state = generate_primes_state(1000000);
-	const auto& primes = std::get<0>(primes_state);
-	const auto& presence = std::get<1>(primes_state);
+	const auto &primes = PrimeNumbers(1000000);
 
 	size_t count = 0;
 
 	for(auto i: primes) {
-		if(is_circular(i,presence)) {
+		if(is_circular(i,primes)) {
 			++count;
 			std::cout << i << std::endl;
 		}

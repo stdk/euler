@@ -4,7 +4,7 @@
 #include <primes.h>
 #include <util.h>
 
-size_t search(const Primes &primes, size_t limit) {
+size_t search(const PrimeNumbers &primes, size_t limit) {
 	for(size_t i=9;i<limit;i+=2) {
 		auto p = std::lower_bound(primes.begin(),primes.end(),i);
 		if(*p != i) {
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	const size_t limit = 1000000;
 
 	Measure measure;
-	const auto& primes = generate_primes_vector(limit);
+	const auto& primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
 	std::cout << "Generation of primes took " << passed << " ms" << std::endl;
 

@@ -68,7 +68,7 @@ void check_palindromes(const Primes &primes) {
 }
 
 int main() {
-    auto primes = generate_primes_vector(10000);
+    const auto &primes = PrimeNumbers(10000);
     
     check_palindromes(primes);
     
