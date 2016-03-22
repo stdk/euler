@@ -2,6 +2,7 @@
 #include <numeric>
 #include <functional>
 #include <gmpxx.h>
+#include <util.h>
 
 int main() {
 	mpz_class number;
@@ -13,6 +14,10 @@ int main() {
 		return a + b - 0x30;
 	});
 
-	std::cout << str << "(" << str.size() << "): " << sum << std::endl;
+	if(!util::test_mode) {
+		std::cout << str << "(" << str.size() << "): ";
+	}
+	std::cout << sum << std::endl;
+
 	return 0;
 }

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <util.h>
 
 void process(std::istream &stream, size_t *numbers, size_t count) {
 	size_t new_count = count + 1;
@@ -10,20 +11,24 @@ void process(std::istream &stream, size_t *numbers, size_t count) {
 	for(size_t i=0;i<new_count;i++) {
 		if(!(stream >> new_numbers[i])) return;
 
-		std::cout.width(3);
-		std::cout.fill('0');
-		std::cout << new_numbers[i] << " ";
+		if(!util::test_mode) {
+			std::cout.width(3);
+			std::cout.fill('0');
+			std::cout << new_numbers[i] << " ";
+		}
 	}
-	std::cout << std::endl;
+	if(!util::test_mode) std::cout << std::endl;
 	
 	process(stream, new_numbers.get(), new_count);
 
-	for(size_t i=0;i<new_count;i++) {
-		std::cout.width(3);
-		std::cout.fill('0');
-		std::cout << new_numbers[i] << " ";
+	if(!util::test_mode) {
+		for(size_t i=0;i<new_count;i++) {
+			std::cout.width(3);
+			std::cout.fill('0');
+			std::cout << new_numbers[i] << " ";
+		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 
 	for(size_t i=0;i<count;i++) {
 		numbers[i] += std::max(new_numbers[i], new_numbers[i+1]);
@@ -33,7 +38,9 @@ void process(std::istream &stream, size_t *numbers, size_t count) {
 size_t get_max_sum(std::istream &stream) {
 	size_t result;
 	stream >> result;
-	std::cout << result << std::endl;
+	if(!util::test_mode) {
+		std::cout << result << std::endl;
+	}
 	process(stream, &result, 1);	
 	return result;
 }

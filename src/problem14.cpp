@@ -8,8 +8,6 @@ std::ostream& operator<<(std::ostream& output, const std::tuple<size_t, size_t> 
     return output;
 }
 
-
-
 class sequence_generator
 {
     std::tuple<size_t, size_t> state; // (sequence_begin, sequence_length)
@@ -80,7 +78,7 @@ std::ostream& operator<<(std::ostream& output, const sequence_generator &g) {
 
 int main() {
     auto longest_sequence = std::max_element(sequence_generator(1), sequence_generator(1000000));
-    std::cout << longest_sequence << ": " << *longest_sequence << std::endl;        
+    std::cout << longest_sequence << std::endl;
     
     return 0;
 }

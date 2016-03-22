@@ -4,6 +4,7 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <util.h>
 #include "custom_locale.h"
 
 size_t word_value(const std::string &word, size_t idx) {
@@ -36,6 +37,8 @@ size_t get_value(const std::vector<std::string> &words) {
 }
 
 int main(int argc, char **argv) {
+	std::ios_base::sync_with_stdio(false);
+
     if(argc < 2) {
         std::cout << "Please specify input filename." << std::endl;
         return 1;
@@ -44,5 +47,8 @@ int main(int argc, char **argv) {
     std::locale::global(std::locale(std::locale(), new csv_locale()));
 
     std::fstream input(argv[1]);
-    std::cout << "Value: " << get_value(read(input)) << std::endl;
+    if(!util::test_mode) {
+    	std::cout << "Value: ";
+    }
+    std::cout << get_value(read(input)) << std::endl;
 }

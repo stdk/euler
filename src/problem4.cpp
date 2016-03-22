@@ -5,8 +5,8 @@
 #include <numeric>
 #include <functional>
 #include <vector>
-
 #include <primes.h>
+#include <util.h>
 
 template<class Factorization>
 static bool satisfies(const Factorization &decomposition) {
@@ -28,7 +28,7 @@ static bool satisfies(const Factorization &decomposition) {
 }
 
 template<class Primes>
-void check_palindromes(const Primes &primes) {
+size_t palindrome_lookup(const Primes &primes) {
     const size_t max_digit = 9;
     std::array<size_t, 3> factors;
     factors.fill(max_digit);
@@ -41,14 +41,16 @@ void check_palindromes(const Primes &primes) {
         auto f = formula();
         auto decomposition = factorize(f, primes);
         if(decomposition.size()) {
-            std::cout << f << ": ";        
-            for(auto value : decomposition) {
-                std::cout << value << "|";
-            }
-            std::cout << std::endl;    
+        	if(!util::test_mode) {
+				std::cout << f << ": ";
+				for(auto value : decomposition) {
+					std::cout << value << "|";
+				}
+				std::cout << std::endl;
+        	}
         
             if(satisfies(decomposition)) {
-                break;   
+                return f;
             }
         }
         
@@ -57,7 +59,7 @@ void check_palindromes(const Primes &primes) {
                 if(j) {
                     factors[j] = max_digit;
                 } else {
-                    return;             
+                    return 0;
                 } 
             } else {
                 factors[j]--;
@@ -70,7 +72,7 @@ void check_palindromes(const Primes &primes) {
 int main() {
     const auto &primes = PrimeNumbers(10000);
     
-    check_palindromes(primes);
+    std::cout << palindrome_lookup(primes) << std::endl;
     
     return 0;
 }

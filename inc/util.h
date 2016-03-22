@@ -15,8 +15,10 @@
 #include <cstdint>
 #include <cstdlib>
 
-const char *test_mode_str = std::getenv("TEST_MODE");
-const bool test_mode = test_mode_str ? std::string(test_mode_str) == "1" : false;
+namespace util {
+	const char *test_mode_str = std::getenv("TEST_MODE");
+	const bool test_mode = util::test_mode_str ? std::string(util::test_mode_str) == "1" : false;
+}
 
 using UniqueIostreamPtr = std::unique_ptr<std::istream,std::function<void(std::istream*)>>;
 
