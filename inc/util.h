@@ -178,10 +178,11 @@ T reverse_digits(T number) {
 	return result;
 }
 
-size_t digit_count(uint64_t number, uint32_t base=10) {
-	if(!number) return 1;
+template<class T>
+size_t digit_count(T number, uint32_t base=10) {
+	if(number == 0) return 1;
 	size_t count = 0;
-	while(number) {
+	while(number != 0) {
 		++count;
 		number /= base;
 	}
