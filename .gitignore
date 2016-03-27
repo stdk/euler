@@ -11,3 +11,17 @@
 *.lai
 *.la
 *.a
+
+# Compiled executables
+*.exe
+
+# Eclipse projects
+.project
+.cproject
+.settings
+
+# cmake generated files
+*.cmake
+CMakeCache.txt
+CMakeFiles
+Makefile
