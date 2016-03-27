@@ -75,4 +75,4 @@ CompactFactors common_compact_factors(const CompactFactors &a,
 std::ostream& operator<<(std::ostream &os, const CompactFactor &factor);
 std::ostream& operator<<(std::ostream &os, const CompactFactors &factors);
 
-#endif
+#endif //PRIMES_H
