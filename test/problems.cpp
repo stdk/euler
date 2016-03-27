@@ -69,6 +69,10 @@ TEST_CASE("problem64", "[problem64]") {
 	test_problem("problem64", "1322\n");
 }
 
+TEST_CASE("problem65", "[problem65]") {
+	test_problem("problem65", "272\n");
+}
+
 TEST_CASE("problem67", "[problem67]") {
 	test_problem("problem18 input/input67.txt", "7273\n");
 }
