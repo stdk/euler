@@ -2,6 +2,7 @@
 #include <array>
 #include <algorithm>
 #include <numeric>
+#include <util.h>
 
 template<class BidirIt>
 bool next_permutation(BidirIt begin, BidirIt end) {
@@ -43,13 +44,18 @@ int main(int argc, char **argv) {
 		std::next_permutation(b.begin(), b.end());
 	}
 
-	std::cout << "next_permutation: ";
+	if(!util::test_mode()) {
+		std::cout << "next_permutation: ";
+	}
+
 	for(auto e: a) std::cout << e;
 	std::cout << std::endl;
 
-	std::cout << "std::next_permutation: ";
-	for(auto e: b) std::cout << e;
-		std::cout << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "std::next_permutation: ";
+		for(auto e: b) std::cout << e;
+			std::cout << std::endl;
+	}
 
 	return 0;
 }

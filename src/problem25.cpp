@@ -2,6 +2,7 @@
 #include <numeric>
 #include <cmath>
 #include <gmpxx.h>
+#include <util.h>
 
 mpf_class fibonacci_number(mpf_class sqrt5, mpf_class f_a, mpf_class f_b, size_t i) {
 	mpf_pow_ui(f_a.get_mpf_t(),f_a.get_mpf_t(),i);
@@ -32,7 +33,9 @@ int main() {
 		auto f = fib(mid);
 		size_t e = get_exp(f);
 
-		std::cout << begin << " [" << mid << "] " << end << " -> " << f << " | " << e << std::endl;
+		if(!util::test_mode()) {
+			std::cout << begin << " [" << mid << "] " << end << " -> " << f << " | " << e << std::endl;
+		}
 
 		if(e >= 1000) {
 			end = mid - 1;

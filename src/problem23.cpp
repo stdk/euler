@@ -35,7 +35,9 @@ int main() {
 	Measure measure;
 	const auto &primes = PrimeNumbers(abundant_representable_limit);
 	auto passed = measure.passed();
-	std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
     const auto abundant = get_abundant_numbers(abundant_representable_limit, primes);
@@ -54,7 +56,10 @@ int main() {
     }
 
     passed = measure.passed();
-    std::cout << "Processing took " << passed << " ms" << std::endl;
-    std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: " << total << std::endl;
+    if(!util::test_mode()) {
+    	std::cout << "Processing took " << passed << " ms" << std::endl;
+    	std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: ";
+    }
+    std::cout << total << std::endl;
     return 0;
 }

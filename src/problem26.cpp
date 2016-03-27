@@ -29,8 +29,14 @@ int main() {
 				}
 			}
 	});
-	std::cout << "Time elapsed: " << t.count() << std::endl;
-	std::cout << longest_rcp_cycle_number << " [" << longest_rcp_cycle_length << "]" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Time elapsed: " << t.count() << std::endl;
+		std::cout << "Longest rcp cycle length: " << longest_rcp_cycle_length << std::endl;
+		std::cout << "Longest rcp cycle number: ";
+	}
+
+	std::cout << longest_rcp_cycle_number << std::endl;
 
 	return 0;
 }

@@ -1,7 +1,8 @@
 include_directories("../inc")
+include_directories("..")
 
-add_executable(test_util "util.cpp")
+add_executable(util "util.cpp")
 
-add_executable(test_problems "problems.cpp")
+add_executable(problems "problems.cpp")
 
-add_executable(test_misc "misc.cpp")
+add_executable(misc "misc.cpp")

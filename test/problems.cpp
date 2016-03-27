@@ -65,6 +65,22 @@ TEST_CASE("problem22", "[problem22]") {
 	test_problem("problem22 input/input22.txt", "871198282\n");
 }
 
+TEST_CASE("problem23", "[problem23]") {
+	test_problem("problem23", "4179871\n");
+}
+
+TEST_CASE("problem24", "[problem24]") {
+	test_problem("problem24", "2783915460\n");
+}
+
+TEST_CASE("problem25", "[problem25]") {
+	test_problem("problem25", "4782\n");
+}
+
+TEST_CASE("problem26", "[problem26]") {
+	test_problem("problem26", "983\n");
+}
+
 TEST_CASE("problem64", "[problem64]") {
 	test_problem("problem64", "1322\n");
 }
