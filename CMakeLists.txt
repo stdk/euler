@@ -11,11 +11,9 @@ set (CMAKE_CXX_COMPILER_ARG1 -std=gnu++11)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 add_subdirectory(cppformat)
+add_subdirectory(test)
 
 include_directories("inc")
-
-add_executable(test_util "test/util.cpp")
-add_executable(test_problems "test/problems.cpp")
 
 add_executable(problem4 "src/problem4.cpp" "src/primes.cpp")
 
