@@ -55,7 +55,7 @@ int main() {
         }
     }
 
-    if(!util::test_mode) {
+    if(!util::test_mode()) {
 		std::cout.fill('0');
 		for(size_t i=0;i<numbers.size();i++) {
 			std::cout << std::setw(2) << numbers[i] << " ";

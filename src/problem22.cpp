@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     std::locale::global(std::locale(std::locale(), new csv_locale()));
 
     std::fstream input(argv[1]);
-    if(!util::test_mode) {
+    if(!util::test_mode()) {
     	std::cout << "Value: ";
     }
     std::cout << get_value(read(input)) << std::endl;

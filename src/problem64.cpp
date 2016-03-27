@@ -154,7 +154,7 @@ int main() {
 	Measure measure;
 	const auto &primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
-	if(!util::test_mode) {
+	if(!util::test_mode()) {
 		std::cout << "Prime generation took " << passed << " ms" << std::endl;
 	}
 
@@ -170,7 +170,7 @@ int main() {
 	}
 
 	passed = measure.passed();
-	if(!util::test_mode) {
+	if(!util::test_mode()) {
 		std::cout << "Processing took " << passed << " ms" << std::endl;
 		std::cout << "Count: " << count << std::endl;
 	} else {

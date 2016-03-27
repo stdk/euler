@@ -41,7 +41,7 @@ size_t palindrome_lookup(const Primes &primes) {
         auto f = formula();
         auto decomposition = factorize(f, primes);
         if(decomposition.size()) {
-        	if(!util::test_mode) {
+        	if(!util::test_mode()) {
 				std::cout << f << ": ";
 				for(auto value : decomposition) {
 					std::cout << value << "|";

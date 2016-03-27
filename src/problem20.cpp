@@ -14,7 +14,7 @@ int main() {
 		return a + b - '0';
 	});
 
-	if(!util::test_mode) {
+	if(!util::test_mode()) {
 		std::cout << str << "(" << str.size() << "): ";
 	}
 	std::cout << sum << std::endl;

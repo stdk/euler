@@ -11,17 +11,17 @@ void process(std::istream &stream, size_t *numbers, size_t count) {
 	for(size_t i=0;i<new_count;i++) {
 		if(!(stream >> new_numbers[i])) return;
 
-		if(!util::test_mode) {
+		if(!util::test_mode()) {
 			std::cout.width(3);
 			std::cout.fill('0');
 			std::cout << new_numbers[i] << " ";
 		}
 	}
-	if(!util::test_mode) std::cout << std::endl;
+	if(!util::test_mode()) std::cout << std::endl;
 	
 	process(stream, new_numbers.get(), new_count);
 
-	if(!util::test_mode) {
+	if(!util::test_mode()) {
 		for(size_t i=0;i<new_count;i++) {
 			std::cout.width(3);
 			std::cout.fill('0');
@@ -38,7 +38,7 @@ void process(std::istream &stream, size_t *numbers, size_t count) {
 size_t get_max_sum(std::istream &stream) {
 	size_t result;
 	stream >> result;
-	if(!util::test_mode) {
+	if(!util::test_mode()) {
 		std::cout << result << std::endl;
 	}
 	process(stream, &result, 1);	

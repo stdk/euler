@@ -17,7 +17,11 @@
 
 namespace util {
 	const char *test_mode_str = std::getenv("TEST_MODE");
-	const bool test_mode = util::test_mode_str ? std::string(util::test_mode_str) == "1" : false;
+	const bool test_mode_state = util::test_mode_str ? std::string(util::test_mode_str) == "1" : false;
+
+	inline bool test_mode() {
+		return test_mode_state;
+	}
 }
 
 using UniqueIostreamPtr = std::unique_ptr<std::istream,std::function<void(std::istream*)>>;
