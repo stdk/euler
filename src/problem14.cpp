@@ -58,9 +58,10 @@ public:
         return *this;
     }
     
-    inline sequence_generator& operator++(int) noexcept {
+    inline sequence_generator operator++(int) noexcept {
+    	sequence_generator tmp(*this);
         next();
-        return *this;
+        return tmp;
     }
     
     inline auto operator*() noexcept -> decltype(std::get<1>(state))  {
