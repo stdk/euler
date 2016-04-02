@@ -117,7 +117,6 @@ add_executable(problem62 "src/problem62.cpp")
 add_executable(problem63 "src/problem63.cpp")
 
 add_executable(problem64 "src/problem64.cpp")
-target_link_libraries(problem64 primes)
 
 add_executable(problem65 "src/problem65.cpp")
 target_link_libraries(problem65 cppformat gmp gmpxx)
