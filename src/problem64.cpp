@@ -3,173 +3,122 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
-#include <primes.h>
 #include <util.h>
 
 /*
  * Odd period square roots
  */
 
-template<class T>
-struct fraction_t {
-	T p;
-	T q;
+class sqrt_continued_fraction {
+	uint32_t n;
+	uint32_t base;
+	uint32_t b = 0;
+	uint32_t c = 0;
+	uint32_t d = 0;
+	uint32_t e = 0;
+	uint32_t f = 0;
 
-	fraction_t(T _p=0, T _q=0):p(_p),q(_q) {
+	sqrt_continued_fraction(uint32_t _n, uint32_t _base, uint32_t _b, uint32_t _c)
+	:n(_n),base(_base),b(_b),c(_c),
+	 d(n - b*b),e(base + b),f(c*e/d) {
 
 	}
 
-	fraction_t<T> simplify(const Factors &factors) const {
-		auto new_p = p;
-		auto new_q = q;
-		for(const auto &factor : factors) {
-			auto divisor = factor.prime;
-			for(auto i=0;i<factor.count;++i) {
-				new_p /= divisor;
-				new_q /= divisor;
-			}
-		}
+public:
+	sqrt_continued_fraction(uint32_t _n):n(_n),base(std::floor(std::sqrt(_n))) {
 
-		return fraction_t<T>(new_p,new_q);
 	}
 
-	fraction_t<T> simplify(const PrimeNumbers &primes) const {
-		auto p_factors = factorize(p,primes);
-		auto q_factors = factorize(q,primes);
+	friend std::ostream& operator<<(std::ostream &os, const sqrt_continued_fraction &s);
 
-		auto common_factors = commont_factors(p_factors,q_factors);
-		if(!common_factors.size()) {
+	sqrt_continued_fraction& operator++() {
+		if(!f) {
+			//start continued fractions computing
+			*this = sqrt_continued_fraction(n,base,base,1);
 			return *this;
 		}
 
-		return simplify(common_factors);
+		uint32_t next_a = c;
+		uint32_t next_b = f*d - b*c;
+		uint32_t next_c = d;
+
+		/*
+		 * according to analysis next_a is the gcd of next_a,next_b and next_c
+		 */
+
+		if(next_b % next_a || next_c % next_a) {
+			std::cout << "Looks like we have a failure: " << *this << std::endl;
+		}
+
+		*this = sqrt_continued_fraction(n,base,next_b/next_a,next_c/next_a);
+		return *this;
 	}
 
-	fraction_t<T> simplify(T value) const {
-		return fraction_t<T>(p/value,q/value);
+	sqrt_continued_fraction operator++(int) {
+		sqrt_continued_fraction tmp(*this);
+		operator++();
+		return tmp;
 	}
 
-	bool operator==(const fraction_t<T> &other) const {
-		return p==other.p && q==other.q;
+	uint32_t operator*() const {
+		/*
+		 * first element of our sequence is base itself
+		 * and only after that we start to compute
+		 * the actual continued fractions
+		 */
+		if(f) {
+			return f;
+		} else {
+			return base;
+		}
 	}
 
-	bool operator!=(const fraction_t<T> &other) const{
-		return p!=other.p || q!=other.q;
-	}
-};
-
-typedef fraction_t<uint32_t> fraction;
-
-template<class T>
-std::ostream& operator<<(std::ostream &os, const fraction_t<T> &fraction) {
-	return os << fraction.p << "/" << fraction.q;
-}
-
-struct state {
-	const PrimeNumbers *primes;
-
-	uint32_t n;
-	uint32_t base;
-	uint32_t b;
-	uint32_t c;
-	uint32_t d;
-	uint32_t e;
-	uint32_t f;
-	fraction g;
-	fraction h;
-
-	state(const PrimeNumbers *_primes,
-		  uint32_t _n)
-	:state(_primes,_n,std::floor(std::sqrt(_n)),std::floor(std::sqrt(_n)),1) {
-
-	}
-
-	state(const PrimeNumbers *_primes,
-		  uint32_t _n, uint32_t _base, uint32_t _b, uint32_t _c)
-	:primes(_primes),
-	 n(_n),base(_base),b(_b),c(_c),
-	 d(n - b*b),e(base + b),f(c*e/d),
-	 g(c,d),h(f*d-b*c,d)
-	{
-
-	}
-
-	state next() const {
-		auto c_factors = factorize(c,*primes);
-		auto d_factors = factorize(d,*primes);
-		auto next_b_factors = factorize(h.p,*primes);
-
-		auto factors = common_factors(c_factors,d_factors,next_b_factors);
-		//auto i = g.simplify(factors);
-		auto j = h.simplify(factors);
-
-		/*if(i.q != j.q) {
-			std::cout << "Looks like we have a failure" << i << " " << j << std::endl;
-		}*/
-
-		return state(primes,n,base,j.p,j.q);
-	}
-
-	bool operator==(const state &o) const {
+	bool operator==(const sqrt_continued_fraction &o) const {
 		return n==o.n && b==o.b && c==o.c;
 	}
 };
 
-std::ostream& operator<<(std::ostream &os, const state &s) {
+std::ostream& operator<<(std::ostream &os, const sqrt_continued_fraction &s) {
 	os << "[N=" << s.n << "][base=" << s.base << "][b=" << s.b
 	   << "][c=" << s.c << "][d=" << s.d << "][e=" << s.e
-	   << "][f=" << s.f << "][g=" << s.g << "][h=" << s.h << "]";
+	   << "][f=" << s.f << "]";
 
 	return os;
 }
 
-template<class Primes>
-int64_t period_length(uint32_t n,const Primes &primes) {
+int64_t period_length(uint32_t n) {
 	auto perfect = perfect_square_root(n);
 	if(perfect != -1) {
 		return 0;
 	}
 
-	state initial(&primes,n);
-	state current = initial;
+	sqrt_continued_fraction initial(n);
+	sqrt_continued_fraction current = ++initial;
 
 	for(size_t i=0;;i++) {
-		//std::cout << current << std::endl;
-		current = current.next();
-
-		if(current == initial) {
+		if(++current == initial) {
 			return i+1;
 		}
 	}
-
-	std::cout << "Processing of n = " << n << " reached iteration limit" << std::endl;
 
 	return -1;
 }
 
 int main() {
 	std::ios_base::sync_with_stdio(false);
-	const prime_t limit = 100000;
 
 	Measure measure;
-	const auto &primes = PrimeNumbers(limit);
-	auto passed = measure.passed();
-	if(!util::test_mode()) {
-		std::cout << "Prime generation took " << passed << " ms" << std::endl;
-	}
-
-	measure.reset();
 
 	size_t count = 0;
 
 	for(uint32_t i=1;i<=10000;i++) {
-		auto len = period_length(i,primes);
+		auto len = period_length(i);
 		if(len % 2 == 1) {
 			count++;
 		}
 	}
 
-	passed = measure.passed();
+	auto passed = measure.passed();
 	if(!util::test_mode()) {
 		std::cout << "Processing took " << passed << " ms" << std::endl;
 		std::cout << "Count: " << count << std::endl;
