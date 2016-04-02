@@ -129,7 +129,7 @@ std::tuple<bool,Sequence> sequence_lookup(const FigurateTable &f,Sequence sequen
 	uint32_t base = (x % 100)*100;
 	if(base < 10) return std::make_tuple(false,Sequence{});
 
-	for(size_t i=0;i<sequence.capacity();i++) {
+	for(uint32_t i=0;i<sequence.capacity();i++) {
 		if(!sequence.used(i)) {
 			auto lower = std::lower_bound(f[i].begin(),f[i].end(),base);
 			auto upper = std::lower_bound(f[i].begin(),f[i].end(),base+100);
@@ -152,7 +152,7 @@ Sequence sequence_lookup(const FigurateTable &f) {
 
 	const auto &rarest = *f.rbegin();
 	for(auto i=rarest.cbegin();i!=rarest.cend();i++) {
-		std::tie(ok,sequence) = sequence_lookup(f,sequence + element{*i,f.size()-1});
+		std::tie(ok,sequence) = sequence_lookup(f,sequence + element{*i,static_cast<uint32_t>(f.size()-1)});
 
 		if(ok) {
 			return sequence;
