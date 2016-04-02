@@ -206,7 +206,7 @@ Factors common_factors(const Factors &a,
 void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors) {
     factors.clear();
 
-    if(number == 1) return;
+    if(number <= 1) return;
 
     for(auto prime: primes) {
     	size_t count = 0;
