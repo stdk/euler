@@ -2,7 +2,10 @@
 #include "catch.hpp"
 
 #include <vector>
+#include <algorithm>
+#include <functional>
 #include <util.h>
+#include <primes.h>
 
 TEST_CASE( "digit_count", "[digit_count]" ) {
 	REQUIRE(digit_count(0) == 1);
@@ -64,6 +67,43 @@ TEST_CASE( "perfect_cubic_root", "[perfect_cubic_root]" ) {
 
 		if(!n[i-1]) {
 			REQUIRE(perfect_cubic_root(i) == -1);
+		}
+	}
+}
+
+TEST_CASE( "gcd", "[gcd]" ) {
+	const size_t limit = 1000;
+	const auto &primes = PrimeNumbers(limit);
+
+	auto accumulator = [](size_t product, const Factor &factor) {
+	   for(size_t i=0;i<factor.count;++i) {
+		   product *= factor.prime;
+	   }
+	   return product;
+	};
+
+	for(size_t a=0;a<limit;++a) {
+		for(size_t b=0;b<limit;++b) {
+			size_t reference_gcd;
+			if(a == 0 || b == 0) {
+				if(a == b) {
+					reference_gcd = 1;
+				} else {
+					reference_gcd = std::max(a,b);
+				}
+			} else {
+				auto factors_a = factorize(a,primes);
+				auto factors_b = factorize(b,primes);
+
+				auto common = common_factors(factors_a, factors_b);
+				reference_gcd = std::accumulate(common.begin(),
+				  							    common.end(),
+												(size_t)1,
+												accumulator);
+			}
+
+			INFO(to_string(a) + "," + to_string(b));
+			REQUIRE(gcd(a,b) == reference_gcd);
 		}
 	}
 }

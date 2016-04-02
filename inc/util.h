@@ -217,6 +217,38 @@ size_t num_order(size_t number, size_t base=10) {
 	return order;
 }
 
+template<class T>
+T gcd(T p, T q) {
+	if(p == q) {
+		if(p == 0) {
+			return 1;
+		} else {
+			return p;
+		}
+	}
+
+	T a = std::abs(p);
+	T b = std::abs(q);
+
+	T common_multiplier = 1;
+	while(a % 2 == 0 && b % 2 == 0) {
+		a /= 2;
+		b /= 2;
+		common_multiplier *= 2;
+	}
+
+	while(a && b) {
+		std::tie(a,b) = std::make_tuple(std::max(a,b) - std::min(a,b), std::min(a,b));
+		std::tie(a,b) = std::make_tuple(a % 2 == 0 ? a/2 : a, b % 2 == 0 ? b/2 : b);
+	}
+
+	if(!a) {
+		return b*common_multiplier;
+	} else {
+		return a*common_multiplier;
+	}
+}
+
 template<size_t x,size_t a, size_t b>
 struct power_impl : power_impl<x*a,a,b-1> {};
 
