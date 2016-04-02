@@ -15,11 +15,15 @@ include_directories("inc")
 
 file(COPY input DESTINATION ${CMAKE_BINARY_DIR})
 
-add_executable(problem4 "src/problem4.cpp" "src/primes.cpp")
+add_library(primes "src/primes.cpp")
+
+add_executable(problem4 "src/problem4.cpp")
+target_link_libraries(problem4 primes)
 
 add_executable(problem11 "src/problem11.cpp")
 
-add_executable(problem12 "src/problem12.cpp" "src/primes.cpp")
+add_executable(problem12 "src/problem12.cpp")
+target_link_libraries(problem12 primes)
 
 add_executable(problem14 "src/problem14.cpp")
 
@@ -35,42 +39,54 @@ target_link_libraries(problem20 gmp gmpxx)
 
 add_executable(problem22 "src/problem22.cpp")
 
-add_executable(problem23 "src/problem23.cpp" "src/primes.cpp")
+add_executable(problem23 "src/problem23.cpp")
+target_link_libraries(problem23 primes)
 
 add_executable(problem24 "src/problem24.cpp")
 
 add_executable(problem25 "src/problem25.cpp")
 target_link_libraries(problem25 gmp gmpxx)
 
-add_executable(problem26 "src/problem26.cpp" "src/primes.cpp")
+add_executable(problem26 "src/problem26.cpp")
+target_link_libraries(problem26 primes)
 
-add_executable(problem27 "src/problem27.cpp" "src/primes.cpp")
+add_executable(problem27 "src/problem27.cpp")
+target_link_libraries(problem27 primes)
 
 add_executable(problem29 "src/problem29.cpp")
 
-add_executable(problem35 "src/problem35.cpp" "src/primes.cpp")
+add_executable(problem35 "src/problem35.cpp")
+target_link_libraries(problem35 primes)
 
-add_executable(problem37 "src/problem37.cpp" "src/primes.cpp")
+add_executable(problem37 "src/problem37.cpp")
+target_link_libraries(problem37 primes)
 
-add_executable(problem41 "src/problem41.cpp" "src/primes.cpp")
+add_executable(problem41 "src/problem41.cpp")
+target_link_libraries(problem41 primes)
 
 add_executable(problem42 "src/problem42.cpp")
 
 add_executable(problem45 "src/problem45.cpp")
 
-add_executable(problem46 "src/problem46.cpp" "src/primes.cpp")
+add_executable(problem46 "src/problem46.cpp")
+target_link_libraries(problem46 primes)
 
-add_executable(problem47 "src/problem47.cpp" "src/primes.cpp")
+add_executable(problem47 "src/problem47.cpp")
+target_link_libraries(problem47 primes)
 
-add_executable(factor "src/factor.cpp" "src/primes.cpp")
+add_executable(factor "src/factor.cpp")
+target_link_libraries(factor primes)
 
 add_executable(problem48 "src/problem48.cpp")
 
-add_executable(problem49 "src/problem49.cpp" "src/primes.cpp")
+add_executable(problem49 "src/problem49.cpp")
+target_link_libraries(problem49 primes)
 
-add_executable(problem50 "src/problem50.cpp" "src/primes.cpp")
+add_executable(problem50 "src/problem50.cpp")
+target_link_libraries(problem50 primes)
 
-add_executable(problem51 "src/problem51.cpp" "src/primes.cpp")
+add_executable(problem51 "src/problem51.cpp")
+target_link_libraries(problem51 primes)
 
 add_executable(problem52 "src/problem52.cpp")
 
@@ -86,11 +102,13 @@ target_link_libraries(problem56 gmp gmpxx)
 add_executable(problem57 "src/problem57.cpp")
 target_link_libraries(problem57 gmp gmpxx)
 
-add_executable(problem58 "src/problem58.cpp" "src/primes.cpp")
+add_executable(problem58 "src/problem58.cpp")
+target_link_libraries(problem58 primes)
 
 add_executable(problem59 "src/problem59.cpp")
 
-add_executable(problem60 "src/problem60.cpp" "src/primes.cpp")
+add_executable(problem60 "src/problem60.cpp")
+target_link_libraries(problem60 primes)
 
 add_executable(problem61 "src/problem61.cpp")
 
@@ -98,7 +116,8 @@ add_executable(problem62 "src/problem62.cpp")
 
 add_executable(problem63 "src/problem63.cpp")
 
-add_executable(problem64 "src/problem64.cpp" "src/primes.cpp")
+add_executable(problem64 "src/problem64.cpp")
+target_link_libraries(problem64 primes)
 
 add_executable(problem65 "src/problem65.cpp")
 target_link_libraries(problem65 cppformat gmp gmpxx)
