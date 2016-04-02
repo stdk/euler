@@ -1,8 +1,7 @@
 #include <cppformat/format.h>
-#include <cstdint>
 #include <gmpxx.h>
-#include <fraction.h>
 #include <util.h>
+#include <continued_fractions.h>
 
 class e_terms_iterator {
 	uint32_t n = 0;
@@ -71,7 +70,7 @@ public:
 		return n != other.n;
 	}
 
-    inline uint32_t operator*() noexcept {
+    inline uint32_t operator*() const noexcept {
     	if(0 == n) {
     		return 2;
     	} else {
@@ -86,66 +85,6 @@ public:
     	return 0;
     }
 };
-
-template<class T,class I>
-class approximation_iterator_t {
-	I term;
-	std::array<T,2> h;
-	std::array<T,2> k;
-	Fraction<T> approximation;
-public:
-	approximation_iterator_t(I terms_iterator)
-	:term(terms_iterator),h({1,0}),k({0,1}),approximation(*term,1) {
-
-	}
-
-    inline approximation_iterator_t& operator++() {
-    	++term;
-    	h = {approximation.p(), h[0]};
-    	k = {approximation.q(), h[1]};
-    	approximation = Fraction<T>(*term*h[0]+h[1],*term*k[0]+k[1]);
-
-        return *this;
-    }
-
-    inline approximation_iterator_t operator++(int) {
-    	approximation_iterator_t tmp(*this);
-        operator++();
-        return tmp;
-    }
-
-    inline approximation_iterator_t operator+(uint32_t x) const {
-    	approximation_iterator_t tmp(*this);
-    	for(auto i=0u;i<x;++i) ++tmp;
-    	return tmp;
-    }
-
-    inline approximation_iterator_t& operator+=(uint32_t x) {
-		for(auto i=0u;i<x;++i) operator++();
-		return *this;
-	}
-
-	inline bool operator==(const approximation_iterator_t &other) const {
-		return term == other.term;
-	}
-
-	inline bool operator!=(const approximation_iterator_t &other) const {
-		return term != other.term;
-	}
-
-	inline const Fraction<T>* operator->() const {
-		return &approximation;
-	}
-
-    inline Fraction<T> operator*() const {
-    	return approximation;
-    }
-};
-
-template<class T, class I>
-auto approximation_iterator(I terms_iterator) -> decltype(approximation_iterator_t<T,I>(terms_iterator)) {
-	return approximation_iterator_t<T,I>(terms_iterator);
-}
 
 int main() {
 	std::ios_base::sync_with_stdio(false);
