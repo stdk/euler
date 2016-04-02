@@ -19,12 +19,12 @@ struct fraction_t {
 
 	}
 
-	fraction_t<T> simplify(const CompactFactors &factors) const {
+	fraction_t<T> simplify(const Factors &factors) const {
 		auto new_p = p;
 		auto new_q = q;
 		for(const auto &factor : factors) {
-			auto divisor = std::get<0>(factor);
-			for(auto i=0;i<std::get<1>(factor);++i) {
+			auto divisor = factor.prime;
+			for(auto i=0;i<factor.count;++i) {
 				new_p /= divisor;
 				new_q /= divisor;
 			}
@@ -34,10 +34,10 @@ struct fraction_t {
 	}
 
 	fraction_t<T> simplify(const PrimeNumbers &primes) const {
-		auto p_factors = factorize_compact(p,primes);
-		auto q_factors = factorize_compact(q,primes);
+		auto p_factors = factorize(p,primes);
+		auto q_factors = factorize(q,primes);
 
-		auto common_factors = common_compact_factors(p_factors,q_factors);
+		auto common_factors = commont_factors(p_factors,q_factors);
 		if(!common_factors.size()) {
 			return *this;
 		}
@@ -95,11 +95,11 @@ struct state {
 	}
 
 	state next() const {
-		auto c_factors = factorize_compact(c,*primes);
-		auto d_factors = factorize_compact(d,*primes);
-		auto next_b_factors = factorize_compact(h.p,*primes);
+		auto c_factors = factorize(c,*primes);
+		auto d_factors = factorize(d,*primes);
+		auto next_b_factors = factorize(h.p,*primes);
 
-		auto factors = common_compact_factors(c_factors,d_factors,next_b_factors);
+		auto factors = common_factors(c_factors,d_factors,next_b_factors);
 		//auto i = g.simplify(factors);
 		auto j = h.simplify(factors);
 

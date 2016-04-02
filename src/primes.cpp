@@ -142,44 +142,20 @@ PrimePresence generate_primes_presence(prime_t limit) {
 	return N;
 }
 
-bool factorize(prime_t number, const PrimeNumbers &primes, Factors &factors) {
-    factors.clear();
-    
-    if(number == 1) {
-        return true;
-    }
-    
-    for(auto prime: primes) {
-        while(number % prime == 0) {
-            factors.push_back(prime);
-            number /= prime;
-            if(number == 1) return true;
-        }
-    }
-    
-    return false;
-}
-
-Factors factorize(prime_t number, const PrimeNumbers &primes) {
-    Factors factors;
-    factorize(number, primes, factors);
-    return factors;    
-}
-
-CompactFactors common_compact_factors(const CompactFactors &a, const CompactFactors &b) {
-	CompactFactors common_factors;
+Factors common_factors(const Factors &a, const Factors &b) {
+	Factors common_factors;
 
 	auto i = a.begin();
 	auto j = b.begin();
 
 	while(i!=a.end() && j != b.end()) {
 
-		auto x = std::get<0>(*i);
-		auto y = std::get<0>(*j);
+		auto x = i->prime;
+		auto y = j->prime;
 
 		if(x == y) {
-			auto count = std::min(std::get<1>(*i),std::get<1>(*j));
-			common_factors.push_back(std::make_tuple(x,count));
+			auto count = std::min(i->count,j->count);
+			common_factors.emplace_back(x,count);
 			++i;
 			++j;
 		} else if(x < y) {
@@ -193,25 +169,25 @@ CompactFactors common_compact_factors(const CompactFactors &a, const CompactFact
 	return common_factors;
 }
 
-CompactFactors common_compact_factors(const CompactFactors &a,
-                                      const CompactFactors &b,
-                                      const CompactFactors &c) {
-	CompactFactors common_factors;
+Factors common_factors(const Factors &a,
+                               const Factors &b,
+                               const Factors &c) {
+	Factors common_factors;
 
 	auto i = a.begin();
 	auto j = b.begin();
 	auto k = c.begin();
 
 	while(i != a.end() && j != b.end() && k != c.end()) {
-		auto x = std::get<0>(*i);
-		auto y = std::get<0>(*j);
-		auto z = std::get<0>(*k);
+		auto x = i->prime;
+		auto y = j->prime;
+		auto z = k->prime;
 
 		if(x == y && y == z) {
-			auto count = std::min({std::get<1>(*i),
-				                   std::get<1>(*j),
-								   std::get<1>(*k)});
-			common_factors.push_back(std::make_tuple(x,count));
+			auto count = std::min({i->count,
+				                   j->count,
+								   k->count});
+			common_factors.emplace_back(x,count);
 			++i;
 			++j;
 			++k;
@@ -227,7 +203,7 @@ CompactFactors common_compact_factors(const CompactFactors &a,
 	return common_factors;
 }
 
-void factorize_compact(uint64_t number, const PrimeNumbers &primes, CompactFactors &factors) {
+void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors) {
     factors.clear();
 
     if(number == 1) return;
@@ -239,27 +215,27 @@ void factorize_compact(uint64_t number, const PrimeNumbers &primes, CompactFacto
             count++;
         }
         if(count) {
-            factors.push_back(std::make_tuple(prime, count));
+            factors.emplace_back(prime, count);
             if(number == 1) return;
         }
     }
 
     if(number > *primes.rbegin()) {
-    	factors.push_back(std::make_tuple(number,1));
+    	factors.emplace_back(number,1);
     }
 }
 
-CompactFactors factorize_compact(uint64_t number, const PrimeNumbers &primes) {
-    CompactFactors factors;
-    factorize_compact(number, primes, factors);
+Factors factorize(uint64_t number, const PrimeNumbers &primes) {
+	Factors factors;
+    factorize(number, primes, factors);
     return factors;
 }
 
-std::ostream& operator<<(std::ostream &os, const CompactFactor &factor) {
-	return os << std::get<0>(factor) << "^" << std::get<1>(factor);
+std::ostream& operator<<(std::ostream &os, const Factor &factor) {
+	return os << factor.prime << "^" << factor.count;
 }
 
-std::ostream& operator<<(std::ostream &os, const CompactFactors &factors) {
+std::ostream& operator<<(std::ostream &os, const Factors &factors) {
 	os << "[";
 	for(auto i=factors.begin();i!=factors.end();++i) {
 		os << *i << (i == factors.end()-1 ? "" : " * ");

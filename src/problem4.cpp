@@ -8,8 +8,20 @@
 #include <primes.h>
 #include <util.h>
 
-template<class Factorization>
-static bool satisfies(const Factorization &decomposition) {
+std::vector<size_t> expand(const Factors &factors) {
+	std::vector<size_t> expansion;
+
+	for(const auto &factor: factors) {
+		for(size_t i=0;i<factor.count;++i) {
+			expansion.push_back(factor.prime);
+		}
+	}
+
+	return expansion;
+}
+
+template<class FactorizationExpansion>
+static bool satisfies(const FactorizationExpansion &decomposition) {
     size_t a = *decomposition.rbegin();
     size_t b = 1;
     const size_t limit = 1000;
@@ -43,13 +55,10 @@ size_t palindrome_lookup(const Primes &primes) {
         if(decomposition.size()) {
         	if(!util::test_mode()) {
 				std::cout << f << ": ";
-				for(auto value : decomposition) {
-					std::cout << value << "|";
-				}
-				std::cout << std::endl;
+				std::cout << decomposition << std::endl;
         	}
         
-            if(satisfies(decomposition)) {
+            if(satisfies(expand(decomposition))) {
                 return f;
             }
         }

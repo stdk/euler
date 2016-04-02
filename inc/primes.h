@@ -8,10 +8,25 @@
 
 typedef uint32_t prime_t;
 
+struct Factor {
+	prime_t prime;
+	size_t count;
+
+	Factor(prime_t p, size_t c):prime(p),count(c) {
+
+	}
+
+	size_t product() const {
+		size_t p = prime;
+		for(size_t i=0;i<count;++i) {
+			p *= prime;
+		}
+		return p;
+	}
+};
+
 typedef std::vector<prime_t> Primes;
-typedef std::vector<prime_t> Factors;
-typedef std::tuple<prime_t, prime_t> CompactFactor;
-typedef std::vector<CompactFactor> CompactFactors;
+typedef std::vector<Factor> Factors;
 typedef std::vector<bool> PrimePresence;
 
 PrimePresence generate_primes_presence(prime_t limit);
@@ -61,18 +76,17 @@ public:
 	bool exclude_prime(prime_t number);
 };
 
-bool factorize(prime_t number, const PrimeNumbers &primes, Factors &factors);
-Factors factorize(prime_t number, const PrimeNumbers &primes);
+void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors);
+Factors factorize(uint64_t number, const PrimeNumbers &primes);
 
-void factorize_compact(uint64_t number, const PrimeNumbers &primes, CompactFactors &factors);
-CompactFactors factorize_compact(uint64_t number, const PrimeNumbers &primes);
+Factors common_factors(const Factors &a,
+		               const Factors &b);
 
-CompactFactors common_compact_factors(const CompactFactors &a, const CompactFactors &b);
-CompactFactors common_compact_factors(const CompactFactors &a,
-                                      const CompactFactors &b,
-                                      const CompactFactors &c);
+Factors common_factors(const Factors &a,
+                       const Factors &b,
+                       const Factors &c);
 
-std::ostream& operator<<(std::ostream &os, const CompactFactor &factor);
-std::ostream& operator<<(std::ostream &os, const CompactFactors &factors);
+std::ostream& operator<<(std::ostream &os, const Factor &factor);
+std::ostream& operator<<(std::ostream &os, const Factors &factors);
 
 #endif //PRIMES_H

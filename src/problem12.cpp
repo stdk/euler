@@ -5,9 +5,9 @@
 #include <numeric>
 #include <functional>
 
-inline size_t divisors_count(const CompactFactors &factors) {
-    return std::accumulate(factors.begin(), factors.end(), (size_t)1, [](size_t a, CompactFactor b) {
-        return a * (std::get<1>(b) + 1);
+inline size_t divisors_count(const Factors &factors) {
+    return std::accumulate(factors.begin(), factors.end(), (size_t)1, [](size_t a, Factor b) {
+        return a * (b.count + 1);
     });
 }
 
@@ -20,7 +20,7 @@ int main() {
     for(size_t i=1;i<1000000;i++) {        
         triangular += i;
 
-        auto factors = factorize_compact(triangular, primes);
+        auto factors = factorize(triangular, primes);
         if(divisors_count(factors) > divisor_limit) {
         	std::cout << triangular << std::endl;
         	break;

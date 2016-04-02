@@ -23,10 +23,10 @@ int main(int argc, char **argv) {
 	auto passed = measure.passed();
 	std::cout << "Prime generation up to " << limit << " took: " << passed << " ms" << std::endl;
 
-	auto factors = factorize_compact(number,primes);
+	auto factors = factorize(number,primes);
 	for(auto factor: factors) {
-		for(size_t i=0;i<std::get<1>(factor);i++) {
-			std::cout << std::get<0>(factor) << " ";
+		for(size_t i=0;i<factor.count;i++) {
+			std::cout << factor.prime << " ";
 		}
 	}
 	std::cout << std::endl;
