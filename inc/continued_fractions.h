@@ -99,7 +99,7 @@ public:
     inline approximation_iterator_t& operator++() {
     	++term;
     	h = {approximation.p(), h[0]};
-    	k = {approximation.q(), h[1]};
+    	k = {approximation.q(), k[0]};
     	approximation = Fraction<T>(*term*h[0]+h[1],*term*k[0]+k[1]);
 
         return *this;
