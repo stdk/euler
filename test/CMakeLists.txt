@@ -7,3 +7,5 @@ target_link_libraries(util primes)
 add_executable(problems "problems.cpp")
 
 add_executable(misc "misc.cpp")
+
+add_executable(fraction "fraction.cpp")

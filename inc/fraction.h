@@ -2,6 +2,7 @@
 #define FRACTION_H_
 
 #include <iostream>
+#include <util.h>
 
 template<typename T>
 class Fraction {
@@ -9,6 +10,12 @@ class Fraction {
 	T _q;
 public:
 	Fraction(T p,T q):_p(p),_q(q) {
+
+	}
+
+	template<typename X>
+	Fraction(Fraction<X> &&f):
+	_p(static_cast<T>(f.p())),_q(static_cast<T>(f.q())) {
 
 	}
 
@@ -22,6 +29,16 @@ public:
 
 	inline std::ostream& write(std::ostream &os) const {
 		return os << _p << "/" << _q;
+	}
+
+	Fraction<T> simplify() const {
+		T divisor = gcd(_p,_q);
+
+		if(divisor != 1) {
+			return Fraction<T>(_p/divisor,_q/divisor);
+		}
+
+		return *this;
 	}
 
 	inline Fraction operator+(T x) {
