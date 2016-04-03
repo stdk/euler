@@ -123,3 +123,6 @@ target_link_libraries(problem65 cppformat gmp gmpxx)
 
 add_executable(problem66 "src/problem66.cpp")
 target_link_libraries(problem66 cppformat gmp gmpxx)
+
+add_executable(problem68 "src/problem68.cpp")
+target_link_libraries(problem68 cppformat)
