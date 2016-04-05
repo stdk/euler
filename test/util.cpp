@@ -76,10 +76,7 @@ TEST_CASE( "gcd", "[gcd]" ) {
 	const auto &primes = PrimeNumbers(limit);
 
 	auto accumulator = [](size_t product, const Factor &factor) {
-	   for(size_t i=0;i<factor.count;++i) {
-		   product *= factor.prime;
-	   }
-	   return product;
+		return product*factor.product();
 	};
 
 	for(size_t a=0;a<limit;++a) {
