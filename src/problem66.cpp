@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 	std::ios_base::sync_with_stdio(false);
 
 	if(argc != 2) {
-		fmt::printf("Usage: {} <limit>\n", argv[0]);
+		fmt::print("Usage: {} <limit>\n", argv[0]);
 		return 1;
 	}
 
