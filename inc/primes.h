@@ -18,7 +18,7 @@ struct Factor {
 
 	size_t product() const {
 		size_t p = prime;
-		for(size_t i=0;i<count;++i) {
+		for(size_t i=0;i<count-1;++i) {
 			p *= prime;
 		}
 		return p;
