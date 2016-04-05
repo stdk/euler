@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.6)
 
-#cmake -G"Eclipse CDT4 - MinGW Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4 -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE -DCMAKE_CXX_COMPILER_ARG1=-std=gnu++11 .
+#cmake -G"Eclipse CDT4 - MinGW Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4 -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE -DCMAKE_CXX_COMPILER_ARG1=-std=gnu++14 .
 
 project(euler)
 
 set (CMAKE_BUILD_TYPE Release)
-set (CMAKE_CXX_COMPILER_ARG1 -std=gnu++11)
+set (CMAKE_CXX_COMPILER_ARG1 -std=gnu++14)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 add_subdirectory(cppformat)
@@ -126,3 +126,6 @@ target_link_libraries(problem66 cppformat gmp gmpxx)
 
 add_executable(problem68 "src/problem68.cpp")
 target_link_libraries(problem68 cppformat)
+
+add_executable(problem69 "src/problem69.cpp")
+target_link_libraries(problem69 primes cppformat)

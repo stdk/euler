@@ -100,3 +100,7 @@ TEST_CASE("problem67", "[problem67]") {
 TEST_CASE("problem68", "[problem68]") {
 	test_problem("problem68", "6531031914842725\n");
 }
+
+TEST_CASE("problem69", "[problem69]") {
+	test_problem("problem69 1000000", "510510\n");
+}
