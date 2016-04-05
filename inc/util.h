@@ -62,7 +62,7 @@ public:
 
 	size_t passed() const {
 		auto now = std::chrono::high_resolution_clock::now();
-		return std::chrono::duration_cast<std::chrono::milliseconds>(now - begin).count();
+		return std::chrono::duration_cast<std::chrono::nanoseconds>(now - begin).count() / 1000000.;
 	}
 };
 
