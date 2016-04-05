@@ -41,8 +41,32 @@ public:
 		return *this;
 	}
 
-	inline Fraction operator+(T x) {
+	inline Fraction operator+(T x) const {
 		return Fraction(_p+x*_q,_q);
+	}
+
+	inline Fraction operator+(const Fraction &o) const {
+		return Fraction(_p*o._q + _q*o._p,_q*o._q).simplify();
+	}
+
+	inline Fraction operator-(const Fraction &o) const {
+		return Fraction(_p*o._q - _q*o._p,_q*o._q).simplify();
+	}
+
+	inline bool operator<(T x) const {
+		return _p < _q*x;
+	}
+
+	inline bool operator>(T x) const {
+		return _p > _q*x;
+	}
+
+	inline bool operator<(const Fraction &o) const {
+		return _p*o._q < _q*o._p;
+	}
+
+	inline bool operator>(const Fraction &o) const {
+		return _p*o._q > _q*o._p;
 	}
 };
 
