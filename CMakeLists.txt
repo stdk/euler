@@ -1,19 +1,23 @@
 cmake_minimum_required(VERSION 2.6)
 
-#cmake -G"Eclipse CDT4 - MinGW Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4 -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE -DCMAKE_CXX_COMPILER_ARG1=-std=gnu++14 .
+#cmake -G"Eclipse CDT4 - MinGW Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4 -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE -DCMAKE_CXX_COMPILER_ARG1=-std=gnu++14 ..
 
 project(euler)
 
 set (CMAKE_BUILD_TYPE Release)
 set (CMAKE_CXX_COMPILER_ARG1 -std=gnu++14)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+add_custom_target(copy_files ALL
+				   COMMAND ${CMAKE_COMMAND} -E copy_directory input ${CMAKE_BINARY_DIR}
+				   COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/*.py
+                   COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.py ${CMAKE_BINARY_DIR}                
+                 )
 
 add_subdirectory(cppformat)
 add_subdirectory(test)
 
 include_directories("inc")
-
-file(COPY input DESTINATION ${CMAKE_BINARY_DIR})
 
 add_library(primes "src/primes.cpp")
 
