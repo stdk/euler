@@ -9,7 +9,8 @@ uint64_t pow_mod(uint64_t n, size_t p, uint64_t mod) {
 	return r;
 }
 
-int main(int argc, char **argv) {
+int main() {
+	std::ios_base::sync_with_stdio(false);
 
 	const uint64_t mod = 10000000000;
 

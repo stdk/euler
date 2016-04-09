@@ -27,20 +27,27 @@ uint32_t search(const Primes &primes) {
 	}
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 	const prime_t limit = 1000000000;
 
 	Measure measure;
 	const auto &primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
-	std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
 	uint32_t square_size = search(primes);
 	passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
-	std::cout << "Square size = " << square_size << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+		std::cout << "Square size = " << square_size << std::endl;
+	} else {
+		std::cout << square_size << std::endl;
+	}
 
 	return 0;
 }

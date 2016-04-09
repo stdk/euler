@@ -15,7 +15,7 @@ Fraction<T> next_fraction(Fraction<T> f) {
 	return Fraction<T>(f.q(),2*f.q()+f.p());
 }
 
-int main(int argc, char **argv) {
+int main() {
 	const size_t iterations = 1000;
 
 	Measure measure;
@@ -30,8 +30,12 @@ int main(int argc, char **argv) {
 	}
 
 	auto passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
-	std::cout << "Fractions containing a numerator with more digits than denominator: " << exceeds << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+		std::cout << "Fractions containing a numerator with more digits than denominator: " << exceeds << std::endl;
+	} else {
+		std::cout << exceeds << std::endl;
+	}
 
 	return 0;
 }

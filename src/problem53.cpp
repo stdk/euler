@@ -1,7 +1,7 @@
 #include <iostream>
 #include <util.h>
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	const size_t limit = 100;
@@ -15,13 +15,19 @@ int main(int argc, char **argv) {
 	for(size_t i=start;i<=limit;i++) {
 		total_numbers -= 1;
 		for(size_t n=i,k=1;n<=bound;n=n*(i-k)/(k+1),k++) {
-			std::cout << n << " ";
+			if(!util::test_mode()) std::cout << n << " ";
 			total_numbers -= 2;
 		}
-		std::cout << " | " << total_numbers << std::endl;
+		if(!util::test_mode()) {
+			std::cout << " | " << total_numbers << std::endl;
+		}
 	}
 
 	auto passed = measure.passed();
-	std::cout << "Search for " << total_numbers << " took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Search for " << total_numbers << " took " << passed << " ms" << std::endl;
+	} else {
+		std::cout << total_numbers << std::endl;
+	}
 	return 0;
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <primes.h>
+#include <util.h>
 
 size_t truncate_right(size_t prime) {
 	return prime / 10;
@@ -33,18 +34,19 @@ bool is_truncatable_prime(size_t prime, const T &presence) {
 }
 
 int main() {
+	std::ios_base::sync_with_stdio(false);
+
 	const auto &primes = PrimeNumbers(1000000);
 
 	size_t sum = 0;
 
 	for(auto i=primes.rbegin();i!=primes.rend();++i) {
 		if(*i > 10 && is_truncatable_prime(*i,primes)) {
-			std::cerr << *i << std::endl;
 			sum += *i;
 		}
 	}
 
-	std::cout << "Sum: " << sum << std::endl;
+	std::cout << sum << std::endl;
 
 	return 0;
 }

@@ -27,14 +27,14 @@ size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, 
 
 
 
-int main(int argc, char **argv) {
+int main() {
 	Measure measure;
 	const std::vector<bool> &presence = generate_primes_presence(1000000000);
-	//const auto primes_state = generate_primes_state(1000000000);
-	//const auto& presence = std::get<1>(primes_state);
 
 	auto passed = measure.passed();
-	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	}
 
 	const size_t digit_num = 9;
 	size_t digits[digit_num];
@@ -45,8 +45,11 @@ int main(int argc, char **argv) {
 	for(size_t i=digit_num;i>0;i--) {
 		std::iota(digits,digits+i,1);
 		if(size_t prime = search_pandigital_prime(digits,i,permutations,presence)) {
-			std::cout << "Pandigital prime search took: " << measure.passed() << " ms" << std::endl;
-			std::cout << "Pandigital prime: " << prime << std::endl;
+			if(!util::test_mode()) {
+				std::cout << "Pandigital prime search took: " << measure.passed() << " ms" << std::endl;
+				std::cout << "Pandigital prime: ";
+			}
+			std::cout << prime << std::endl;
 			break;
 		}
 

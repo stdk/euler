@@ -14,7 +14,7 @@ bool is_palindrome(T number) {
 	return true;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	const uint32_t limit = 10000;
@@ -39,8 +39,13 @@ int main(int argc, char **argv) {
 	}
 
 	auto passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
-	std::cout << "There are " << count << " possible Lychrel numbers below " << limit << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+		std::cout << "There are " << count << " possible Lychrel numbers below " << limit << std::endl;
+	} else {
+		std::cout << count << std::endl;
+	}
 
 	return 0;
 }

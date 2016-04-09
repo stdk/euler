@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <primes.h>
 #include <util.h>
@@ -69,7 +70,7 @@ bool is_correct_sequence(Sequence &sequence) {
 	return false;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 	const uint64_t limit = 10000;
 
@@ -78,12 +79,16 @@ int main(int argc, char **argv) {
 	auto primes = PrimeNumbers(limit);
 
 	auto passed = measure.passed();
-	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	}
 
 	auto begin = std::lower_bound(primes.begin(),primes.end(),1000);
 	auto end = std::lower_bound(primes.begin(),primes.end(),10000);
 
 	std::vector<uint32_t> sequence;
+
+	std::string result;
 
 	measure.reset();
 	for(auto i=begin;i!=end;++i) {
@@ -101,15 +106,21 @@ int main(int argc, char **argv) {
 			}
 
 			if(is_correct_sequence(sequence)) {
+				std::ostringstream os;
 				for(auto p: sequence) {
-					std::cout << p << " ";
+					os << p;
 				}
-				std::cout << std::endl;
+				result = os.str();
 			}
 		}
 	}
 	passed = measure.passed();
-	std::cout << "Search took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took: " << passed << " ms" << std::endl;
+	}
+
+	std::cout << result << std::endl;
 
 	return 0;
 }

@@ -26,9 +26,12 @@ int main() {
 	auto count = powerful_digits_count();
 
 	auto passed = measure.passed();
-	std::cout << "Counting took: " << passed << " ms" << std::endl;
 
-	std::cout << "Powerful digits count: " << count << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Counting took: " << passed << " ms" << std::endl;
+		std::cout << "Powerful digits count: ";
+	}
+	std::cout << count << std::endl;
 
 	return 0;
 }

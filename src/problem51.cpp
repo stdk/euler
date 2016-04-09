@@ -80,10 +80,12 @@ prime_t search(Iterator begin, Iterator end, const PrimeContainer &primes) {
 					uint32_t m = fill_by_mask<2>(0,mask,bits);
 					auto group = count_group_size(*i,m,len,primes);
 					if(group.size() > 7) {
-						for(auto e: group) {
-							std::cout << e << " ";
+						if(!util::test_mode()) {
+							for(auto e: group) {
+								std::cout << e << " ";
+								std::cout << std::endl;
+							}
 						}
-						std::cout << std::endl;
 						return group[0];
 					}
 				}
@@ -93,7 +95,7 @@ prime_t search(Iterator begin, Iterator end, const PrimeContainer &primes) {
 	return 0;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	const size_t digit_count = 6;
@@ -102,7 +104,10 @@ int main(int argc, char **argv) {
 	Measure measure;
 	const auto &primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
-	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	}
 
 	auto begin = std::lower_bound(primes.begin(),primes.end(),power<10,digit_count-1>::value);
 	auto end = std::lower_bound(primes.begin(),primes.end(),limit);
@@ -110,7 +115,12 @@ int main(int argc, char **argv) {
 	measure.reset();
 	uint32_t prime = search(begin,end,primes);
 	passed = measure.passed();
-	std::cout << "Search for " << prime << " took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search for " << prime << " took: " << passed << " ms" << std::endl;
+	} else {
+		std::cout << prime << std::endl;
+	}
 
 	return 0;
 }

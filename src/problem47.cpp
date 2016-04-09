@@ -42,13 +42,15 @@ size_t search(const P &primes,uint32_t limit) {
 
 		while(shift--) {
 			state >>= 1;
-			state += 8*has_four_prime_factors(++i,primes);
+			state += 8*has_four_prime_factors(++i + 3,primes);
 		}
 	}
 	return 0;
 }
 
-int main(int argc, char **argv) {
+int main() {
+	std::ios_base::sync_with_stdio(false);
+
 	const uint32_t limit = 1000000;
 
 	Measure measure;
@@ -56,12 +58,19 @@ int main(int argc, char **argv) {
 	const auto &primes = PrimeNumbers(limit);
 
 	auto passed = measure.passed();
-	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
 	size_t number = search(primes,limit);
 	passed = measure.passed();
-	std::cout << "Search for " << number << " took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search for " << number << " took: " << passed << " ms" << std::endl;
+	} else {
+		std::cout << number << std::endl;
+	}
 
 	return 0;
 }

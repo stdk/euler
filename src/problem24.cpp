@@ -33,7 +33,7 @@ struct fact : std::integral_constant<size_t, N*fact<N-1>::value> {};
 template<>
 struct fact<1> : std::integral_constant<size_t, 1> {};
 
-int main(int argc, char **argv) {
+int main() {
 	const size_t len = 10;
 	std::array<size_t,len> a;
 	std::iota(a.begin(),a.end(),0);

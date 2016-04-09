@@ -21,7 +21,7 @@ size_t search(const PrimeNumbers &primes, size_t limit) {
 	return 0;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	const size_t limit = 1000000;
@@ -29,12 +29,18 @@ int main(int argc, char **argv) {
 	Measure measure;
 	const auto& primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
-	std::cout << "Generation of primes took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Generation of primes took " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
 	size_t number = search(primes,limit);
 	passed = measure.passed();
-	std::cout << "Search of " << number << " took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Search of " << number << " took " << passed << " ms" << std::endl;
+	} else {
+		std::cout << number << std::endl;
+	}
 
 	return 0;
 }

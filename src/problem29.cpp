@@ -63,7 +63,9 @@ int main(int argc, char **argv) {
 		}
 	});
 
-	std::cout << "Time elapsed: " << elapsed.count() << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Time elapsed: " << elapsed.count() << std::endl;
+	}
 	std::cout << unique_count << std::endl;
 	return 0;
 }

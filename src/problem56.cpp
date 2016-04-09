@@ -2,7 +2,7 @@
 #include <gmpxx.h>
 #include <util.h>
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 	const size_t limit = 100;
 
@@ -25,8 +25,12 @@ int main(int argc, char **argv) {
 	}
 
 	auto passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
-	std::cout << "Max sum: " << max_sum << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+		std::cout << "Max sum: " << max_sum << std::endl;
+	} else {
+		std::cout << max_sum << std::endl;
+	}
 
 	return 0;
 }

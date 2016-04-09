@@ -31,11 +31,18 @@ size_t search(size_t start) {
 	return 0;
 }
 
-int main(int argc, char **argv) {
+int main() {
+	std::ios_base::sync_with_stdio(false);
+
 	Measure measure;
 	auto number = search(143+1);
 	auto passed = measure.passed();
-	std::cout << "Search for " << number << " took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search for " << number << " took: " << passed << " ms" << std::endl;
+	} else {
+		std::cout << number << std::endl;
+	}
 
 	return 0;
 }

@@ -79,8 +79,10 @@ int main(int argc, char **argv) {
 	Measure measure;
 	auto data = read(argv[1]);
 	auto passed = measure.passed();
-	std::cout << "Reading took " << passed << " ms" << std::endl;
-	std::cout << "Data length: " << data.size() << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Reading took " << passed << " ms" << std::endl;
+		std::cout << "Data length: " << data.size() << std::endl;
+	}
 
 	auto frequency = count_frequency(data);
 	auto key = get_key(frequency);
@@ -90,7 +92,7 @@ int main(int argc, char **argv) {
 		sum += *i^key[(i-data.begin())%key_length];
 	}
 
-	std::cout << "Sum: " << std::dec <<sum << std::endl;
+	std::cout << std::dec << sum << std::endl;
 
 	return 0;
 }

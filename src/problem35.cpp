@@ -21,6 +21,8 @@ bool is_circular(size_t prime, const Presence &presence) {
 }
 
 int main() {
+	std::ios_base::sync_with_stdio(false);
+
 	const auto &primes = PrimeNumbers(1000000);
 
 	size_t count = 0;
@@ -28,11 +30,17 @@ int main() {
 	for(auto i: primes) {
 		if(is_circular(i,primes)) {
 			++count;
-			std::cout << i << std::endl;
+			if(!util::test_mode()) {
+				std::cout << i << std::endl;
+			}
 		}
 	}
 
-	std::cout << "Count: " << count << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Count: ";
+	}
+
+	std::cout << count << std::endl;
 
 	return 0;
 }

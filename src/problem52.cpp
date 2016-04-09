@@ -26,8 +26,9 @@ bool check_number(uint32_t number) {
 	return true;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
+
 	Measure measure;
 	for(uint32_t i=power<10,5>::value;i<power<10,7>::value;i++) {
 		if(check_number(i)) {
@@ -36,6 +37,9 @@ int main(int argc, char **argv) {
 		}
 	}
 	auto passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+	}
 	return 0;
 }

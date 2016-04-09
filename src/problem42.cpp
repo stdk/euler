@@ -3,7 +3,8 @@
 #include <string>
 #include <numeric>
 #include <algorithm>
-#include "custom_locale.h"
+#include <custom_locale.h>
+#include <util.h>
 
 inline size_t tr(size_t i) {
 	return i*(i+1)/2;
@@ -41,7 +42,12 @@ int main(int argc, char **argv) {
 	std::locale::global(std::locale(std::locale(), new csv_locale()));
 	std::fstream in(argv[1]);
 
-	std::cout << "Triangle words: " << count_triangle_words(in,triangle_numbers) << std::endl;
+	auto n = count_triangle_words(in,triangle_numbers);
+
+	if(!util::test_mode()) {
+		std::cout << "Triangle words: ";
+	}
+	std::cout << n << std::endl;
 
 	return 0;
 }

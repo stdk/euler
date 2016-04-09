@@ -229,7 +229,7 @@ public:
 				ra &= ~(1 << kb);
 				rb &= ~(1 << kb);
 			}
-			for(size_t i=size-1;i>=0;i--) {
+			for(ssize_t i=size-1;i>=0;i--) {
 				//std::cout << "[" << cards[i] << "<->" << other.cards[i] << "]";
 				if(cards[i] != other.cards[i]) {
 					return cards[i] < other.cards[i];
@@ -267,12 +267,19 @@ int main(int argc, char **argv) {
 	while(in >> a >> b) {
 	    bool b_wins = a < b;
 		a_wins += (b_wins ? 0 : 1);
-		std::cout << a << (b_wins ? " < " : " > ") << b << std::endl;
+
+		if(!util::test_mode()) {
+			std::cout << a << (b_wins ? " < " : " > ") << b << std::endl;
+		}
 	}
 
 	auto passed = measure.passed();
-	std::cout << "Processing took " << passed << " ms" << std::endl;
-	std::cout << "Player 1 wins: " << a_wins << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Processing took " << passed << " ms" << std::endl;
+		std::cout << "Player 1 wins: ";
+	}
+	std::cout << a_wins << std::endl;
 
 	return 0;
 }

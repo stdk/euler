@@ -3,14 +3,20 @@
 #include <primes.h>
 #include <util.h>
 
-int main(int argc, char ** argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	Measure measure;
 	const prime_t limit = 1000000;
 	const auto &primes = PrimeNumbers(limit);
 	auto passed = measure.passed();
-	std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took: " << passed << " ms" << std::endl;
+	}
+
+	prime_t solution = 1;
+	prime_t solution_length = 1;
 
 	measure.reset();
 	prime_t sum = *primes.begin();
@@ -23,7 +29,13 @@ int main(int argc, char ** argv) {
 		if(primes[sum] && length > best_length) {
 			best_length = length;
 			last_success = i;
-			std::cout << sum << " " << length << std::endl;
+			if(!util::test_mode()) {
+				std::cout << sum << " " << length << std::endl;
+			}
+			if(solution_length < length) {
+				solution_length = length;
+				solution = sum;
+			}
 		}
 		if(sum > *primes.rbegin()) {
 			for(;i!=last_success;--i) {
@@ -33,7 +45,12 @@ int main(int argc, char ** argv) {
 		}
 	}
 	passed = measure.passed();
-	std::cout << "Search took: " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took: " << passed << " ms" << std::endl;
+	}
+
+	std::cout << solution << std::endl;
 
 	return 0;
 }

@@ -162,7 +162,7 @@ Sequence sequence_lookup(const FigurateTable &f) {
 	return sequence;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 
 	Measure measure;
@@ -170,18 +170,26 @@ int main(int argc, char **argv) {
 	const auto &f = generate_figurates(999,10000);
 
 	auto passed = measure.passed();
-	std::cout << "Generation took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Generation took " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
 
 	auto sequence = sequence_lookup(f);
-	for(auto x: sequence) {
-		std::cout << x << " ";
+
+	if(!util::test_mode()) {
+		for(auto x: sequence) {
+			std::cout << x << " ";
+		}
 	}
-	std::cout << "-> " << std::accumulate(sequence.begin(),sequence.end(),0) << std::endl;
+
+	std::cout << std::accumulate(sequence.begin(),sequence.end(),0) << std::endl;
 
 	passed = measure.passed();
-	std::cout << "Lookup took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Lookup took " << passed << " ms" << std::endl;
+	}
 
 	return 0;
 }

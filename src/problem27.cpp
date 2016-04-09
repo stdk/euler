@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <primes.h>
+#include <util.h>
 
 size_t sequential_primes_length(const PrimeNumbers &primes, int a, size_t b) {
 	auto f = [&](size_t n) -> int {
@@ -42,8 +43,12 @@ int main() {
 		}
 	}
 
-	std::cout << "a = " << a_best << " | " << "b = " << b_best << " | length = " << longest_sequence << std::endl;
-	std::cout << "Product: " << a_best*b_best << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "a = " << a_best << " | " << "b = " << b_best << " | length = " << longest_sequence << std::endl;
+		std::cout << "Product: ";
+	}
+
+	std::cout << a_best*b_best << std::endl;
 
 	return 0;
 }

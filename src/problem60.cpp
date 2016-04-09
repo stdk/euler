@@ -176,7 +176,7 @@ bool simple_check(prime_t first, const std::vector<prime_t> &group, const Primes
 	return false;
 }
 
-int main(int argc, char **argv) {
+int main() {
 	std::ios_base::sync_with_stdio(false);
 	const size_t order = 8;
 	const prime_t limit = power<10,order>::value;
@@ -186,7 +186,9 @@ int main(int argc, char **argv) {
 	const auto &primes = PrimeNumbers(limit);
 
 	auto passed = measure.passed();
-	std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	if(!util::test_mode()) {
+		std::cout << "Prime generation took " << passed << " ms" << std::endl;
+	}
 
 	measure.reset();
 
@@ -230,7 +232,7 @@ int main(int argc, char **argv) {
 			i = stats.erase(i);
 		}
 	}
-	std::cout << "Candidates: " << candidates.size() << std::endl;
+	//std::cout << "Candidates: " << candidates.size() << std::endl;
 
 	while(erased.size()) {
 		for(auto p: erased) {
@@ -248,7 +250,7 @@ int main(int argc, char **argv) {
 				i = candidates.erase(i);
 			}
 		}
-		std::cout << "Candidates: " << candidates.size() << std::endl;
+		//std::cout << "Candidates: " << candidates.size() << std::endl;
 	}
 
 	std::set<Group> front_a;
@@ -262,17 +264,22 @@ int main(int argc, char **argv) {
 			std::swap(front_a,front_b);
 		}
 		if(front_a.size()) {
-			std::cout << i->first << " => ";
 			for(auto chain: front_a) {
-				std::cout << chain << " => " << std::accumulate(chain.begin(),chain.end(),0);
+				uint32_t sum = std::accumulate(chain.begin(),chain.end(),0);
+				if(!util::test_mode()) {
+					std::cout << i->first << chain << " => " << sum << std::endl;
+				}
+				std::cout << sum << std::endl;
 			}
-			std::cout << std::endl;
 			break;
 		}
 	}
 
 	passed = measure.passed();
-	std::cout << "Search took " << passed << " ms" << std::endl;
+
+	if(!util::test_mode()) {
+		std::cout << "Search took " << passed << " ms" << std::endl;
+	}
 
 	return 0;
 }

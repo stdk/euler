@@ -57,6 +57,10 @@ TEST_CASE("problem18", "[problem18]") {
 	test_problem("problem18 input/input18.txt", "1074\n");
 }
 
+TEST_CASE("problem19", "[problem19]") {
+	test_problem("problem19", "171\n");
+}
+
 TEST_CASE("problem20", "[problem20]") {
 	test_problem("problem20", "648\n");
 }
@@ -79,6 +83,138 @@ TEST_CASE("problem25", "[problem25]") {
 
 TEST_CASE("problem26", "[problem26]") {
 	test_problem("problem26", "983\n");
+}
+
+TEST_CASE("problem27", "[problem27]") {
+	test_problem("problem27", "-59231\n");
+}
+
+TEST_CASE("problem29", "[problem29]") {
+	test_problem("problem29 100", "9183\n");
+}
+
+TEST_CASE("problem31", "[problem29]") {
+	test_problem("problem31", "73682\n");
+}
+
+TEST_CASE("problem32", "[problem32]") {
+	test_problem("problem32", "45228\n");
+}
+
+TEST_CASE("problem33", "[problem33]") {
+	test_problem("problem33", "100\n");
+}
+
+TEST_CASE("problem34", "[problem34]") {
+	test_problem("problem34", "40730\n");
+}
+
+TEST_CASE("problem35", "[problem35]") {
+	test_problem("problem35", "55\n");
+}
+
+TEST_CASE("problem36", "[problem36]") {
+	test_problem("problem36", "872187\n");
+}
+
+TEST_CASE("problem37", "[problem37]") {
+	test_problem("problem37", "748317\n");
+}
+
+TEST_CASE("problem40", "[problem40]") {
+	test_problem("problem40", "210\n");
+}
+
+TEST_CASE("problem41", "[problem41]") {
+	test_problem("problem41", "7652413\n");
+}
+
+TEST_CASE("problem42", "[problem42]") {
+	test_problem("problem42 input/input42.txt", "162\n");
+}
+
+TEST_CASE("problem43", "[problem43]") {
+	test_problem("problem43", "16695334890\n");
+}
+
+TEST_CASE("problem44", "[problem44]") {
+	test_problem("problem44", "5482660\n");
+}
+
+TEST_CASE("problem45", "[problem45]") {
+	test_problem("problem45", "1533776805\n");
+}
+
+TEST_CASE("problem46", "[problem46]") {
+	test_problem("problem46", "5777\n");
+}
+
+TEST_CASE("problem47", "[problem47]") {
+	test_problem("problem47", "134043\n");
+}
+
+TEST_CASE("problem48", "[problem48]") {
+	test_problem("problem48", "9110846700\n");
+}
+
+TEST_CASE("problem49", "[problem49]") {
+	test_problem("problem49", "296962999629\n");
+}
+
+TEST_CASE("problem50", "[problem50]") {
+	test_problem("problem50", "997651\n");
+}
+
+TEST_CASE("problem51", "[problem51]") {
+	test_problem("problem51", "121313\n");
+}
+
+TEST_CASE("problem52", "[problem52]") {
+	test_problem("problem52", "142857\n");
+}
+
+TEST_CASE("problem53", "[problem53]") {
+	test_problem("problem53", "4075\n");
+}
+
+TEST_CASE("problem54 ", "[problem54]") {
+	test_problem("problem54 input/input54.txt", "376\n");
+}
+
+TEST_CASE("problem55", "[problem55]") {
+	test_problem("problem55", "249\n");
+}
+
+TEST_CASE("problem56", "[problem56]") {
+	test_problem("problem56", "972\n");
+}
+
+TEST_CASE("problem57", "[problem57]") {
+	test_problem("problem57", "153\n");
+}
+
+TEST_CASE("problem58", "[problem58]") {
+	test_problem("problem58", "26241\n");
+}
+
+TEST_CASE("problem59", "[problem59]") {
+	test_problem("problem59 input/input59.txt", "107359\n");
+}
+
+TEST_CASE("problem60", "[problem60]") {
+	test_problem("problem60", "26033\n");
+}
+
+TEST_CASE("problem61", "[problem61]") {
+	test_problem("problem61", "28684\n");
+}
+
+TEST_CASE("problem62", "[problem62]") {
+	test_problem("problem62", "127035954683\n");
+}
+
+TEST_CASE("problem63", "[problem63]") {
+	test_problem("problem63", "49\n");
 }
 
 TEST_CASE("problem64", "[problem64]") {
