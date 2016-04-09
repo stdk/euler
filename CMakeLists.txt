@@ -55,6 +55,8 @@ target_link_libraries(problem27 primes)
 
 add_executable(problem29 "src/problem29.cpp")
 
+add_executable(problem33 "src/problem33.cpp")
+
 add_executable(problem35 "src/problem35.cpp")
 target_link_libraries(problem35 primes)
 
