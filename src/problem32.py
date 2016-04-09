@@ -10,19 +10,19 @@ for g in guess:
         s = ''.join(p)
         a,b,c = [int(k) for k in [s[0]+g[0],s[1:3]+g[1],s[3:]+g[2]]]
         if a*b == c:
-            print a,b,c
+            #print a,b,c
             products.add(c)
         a,b,c = [int(k) for k in [s[0]+g[1],s[1:3]+g[0],s[3:]+g[2]]]
         if a*b == c:
-            print a,b,c
+            #print a,b,c
             products.add(c)
         a,b,c = [int(k) for k in [g[0],s[0:3]+g[1],s[3:]+g[2]]]
         if a*b == c:
-            print a,b,c
+            #print a,b,c
             products.add(c)
         a,b,c = [int(k) for k in [g[1],s[0:3]+g[0],s[3:]+g[2]]]
         if a*b == c:
-            print a,b,c
+            #print a,b,c
             products.add(c)
 
 print sum(products)
