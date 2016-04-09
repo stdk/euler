@@ -3,14 +3,8 @@
 #include <algorithm>
 #include <numeric>
 #include <iterator>
-#include "primes.h"
-#include "util.h"
-
-template<size_t N>
-struct fact : std::integral_constant<size_t, N*fact<N-1>::value> {};
-
-template<>
-struct fact<1> : std::integral_constant<size_t, 1> {};
+#include <primes.h>
+#include <util.h>
 
 size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, const std::vector<bool> &presence) {
 	std::reverse_iterator<size_t*> reverse_digits(digits+len);
@@ -45,7 +39,7 @@ int main(int argc, char **argv) {
 	const size_t digit_num = 9;
 	size_t digits[digit_num];
 
-	size_t permutations = fact<digit_num>::value;
+	size_t permutations = factorial<digit_num>::value;
 
 	measure.reset();
 	for(size_t i=digit_num;i>0;i--) {

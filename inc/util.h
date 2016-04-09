@@ -261,4 +261,13 @@ struct power_impl<x,a,1> : std::integral_constant<size_t,x> {};
 template<size_t a,size_t b>
 using power = power_impl<a,a,b>;
 
+template<size_t N>
+struct factorial : std::integral_constant<size_t, N*factorial<N-1>::value> {};
+
+template<>
+struct factorial<1> : std::integral_constant<size_t, 1> {};
+
+template<>
+struct factorial<0> : std::integral_constant<size_t, 1> {};
+
 #endif
