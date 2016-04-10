@@ -177,7 +177,7 @@ TEST_CASE("problem53", "[problem53]") {
 	test_problem("problem53", "4075\n");
 }
 
-TEST_CASE("problem54 ", "[problem54]") {
+TEST_CASE("problem54", "[problem54]") {
 	test_problem("problem54 input/input54.txt", "376\n");
 }
 
@@ -239,4 +239,8 @@ TEST_CASE("problem68", "[problem68]") {
 
 TEST_CASE("problem69", "[problem69]") {
 	test_problem("problem69 1000000", "510510\n");
+}
+
+TEST_CASE("problem70", "[problem70]") {
+	test_problem("problem70 10000000", "8319823\n");
 }

@@ -2,6 +2,7 @@
 #define FRACTION_H_
 
 #include <iostream>
+#include <limits>
 #include <util.h>
 
 template<typename T>
@@ -67,6 +68,28 @@ public:
 
 	inline bool operator>(const Fraction &o) const {
 		return _p*o._q > _q*o._p;
+	}
+
+	inline explicit operator double() const {
+		if(!_q) {
+			if(_p >= 0) {
+				return std::numeric_limits<double>::infinity();
+			} else {
+				return -std::numeric_limits<double>::infinity();
+			}
+		}
+		return static_cast<double>(_p)/_q;
+	}
+
+	inline explicit operator float() const {
+		if(!_q) {
+			if(_p >= 0) {
+				return std::numeric_limits<float>::infinity();
+			} else {
+				return -std::numeric_limits<float>::infinity();
+			}
+		}
+		return static_cast<float>(_p)/_q;
 	}
 };
 
