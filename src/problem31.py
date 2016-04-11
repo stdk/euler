@@ -1,5 +1,3 @@
-import numpy as np
-
 def combo_count_bruteforce(target,value=0,nominals=None):
     if nominals is None:
         nominals = [200,100,50,20,10,5,2,1]    
@@ -14,7 +12,8 @@ def combo_count_dynamic(target,value=0,nominals=None):
     if nominals is None:
         nominals = [1,2,5,10,20,50,100,200]
         
-    table = np.zeros((target+1,len(nominals)),dtype=np.int32)    
+    #table = np.zeros((target+1,len(nominals)),dtype=np.int32)    
+    table = [ [0]*len(nominals) for i in xrange(target+1) ]
     
     for i in range(len(nominals)):
         table[0][i] = 1
@@ -27,9 +26,6 @@ def combo_count_dynamic(target,value=0,nominals=None):
             p,q = divmod(i,nominals[j])
             table[i][j] = table[i][j-1] + (table[i-nominals[j]][j] if i >= nominals[j] else 0)
             
-    #for i in range(len(table)):
-    #    print i,table[i]
-        
     return table[-1][-1]
 
 print combo_count_dynamic(200)   
