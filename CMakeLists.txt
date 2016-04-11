@@ -9,8 +9,9 @@ set (CMAKE_CXX_COMPILER_ARG1 -std=gnu++14)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 add_custom_target(copy_files ALL
-				   COMMAND ${CMAKE_COMMAND} -E copy_directory input ${CMAKE_BINARY_DIR}
-				   COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/*.py
+                   COMMAND rm -rf ${CMAKE_BINARY_DIR}/input
+				   COMMAND cp -R ${CMAKE_CURRENT_SOURCE_DIR}/input ${CMAKE_BINARY_DIR}
+				   COMMAND rm -f ${CMAKE_BINARY_DIR}/*.py
                    COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.py ${CMAKE_BINARY_DIR}                
                  )
 
