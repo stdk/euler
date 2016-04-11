@@ -12,7 +12,7 @@ uint32_t search(const Primes &primes) {
 		for(uint32_t i=1;i<4;i++) {
 			prime_t candidate = x-i*(2*n-2);
 
-			if(candidate > *primes.rbegin()) {
+			if(candidate > primes.detect_limit()) {
 				return 0;
 			}
 
@@ -29,7 +29,7 @@ uint32_t search(const Primes &primes) {
 
 int main() {
 	std::ios_base::sync_with_stdio(false);
-	const prime_t limit = 1000000000;
+	const prime_t limit = 100000;
 
 	Measure measure;
 	const auto &primes = PrimeNumbers(limit);

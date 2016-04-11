@@ -6,7 +6,7 @@
 #include <primes.h>
 #include <util.h>
 
-size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, const std::vector<bool> &presence) {
+size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, const PrimeNumbers &primes) {
 	std::reverse_iterator<size_t*> reverse_digits(digits+len);
 
 	for(size_t k=0;k<permutations;k++) {
@@ -15,7 +15,7 @@ size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, 
 			return 10*n + digit;
 		});
 
-		if(prime_present(n,presence)) {
+		if(primes[n]) {
 			return n;
 		}
 
@@ -29,7 +29,7 @@ size_t search_pandigital_prime(size_t *digits, size_t len, size_t permutations, 
 
 int main() {
 	Measure measure;
-	const std::vector<bool> &presence = generate_primes_presence(1000000000);
+	const auto &primes = PrimeNumbers(100000);
 
 	auto passed = measure.passed();
 	if(!util::test_mode()) {
@@ -44,7 +44,7 @@ int main() {
 	measure.reset();
 	for(size_t i=digit_num;i>0;i--) {
 		std::iota(digits,digits+i,1);
-		if(size_t prime = search_pandigital_prime(digits,i,permutations,presence)) {
+		if(size_t prime = search_pandigital_prime(digits,i,permutations,primes)) {
 			if(!util::test_mode()) {
 				std::cout << "Pandigital prime search took: " << measure.passed() << " ms" << std::endl;
 				std::cout << "Pandigital prime: ";
