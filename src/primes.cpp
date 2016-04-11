@@ -18,7 +18,20 @@ bool prime_present(prime_t number, const PrimePresence &presence) {
 }
 
 bool PrimeNumbers::operator[](prime_t number) const {
-	return prime_present(number,presence);
+	if(number < m_limit) {
+		return prime_present(number,presence);
+	}
+
+	if(number < m_detect_limit) {
+		for(auto prime: primes) {
+			if(number % prime == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	return false;
 }
 
 bool PrimeNumbers::exclude_prime(prime_t number) {
@@ -41,21 +54,24 @@ bool PrimeNumbers::exclude_prime(prime_t number) {
 }
 
 PrimeNumbers::PrimeNumbers(prime_t limit):
+m_limit(std::max((prime_t)4,limit)),
+m_detect_limit(m_limit*m_limit),
+
 // see http://en.wikipedia.org/wiki/Prime-counting_function
 //primes(1.25506*limit/log(limit));
 //primes(limit/(log(limit)-1.1));
-primes(limit/(log(limit)-1.1)),
+primes(m_limit/(log(m_limit)-1.1)),
 
 // 5 7 11 13 17 19 23 25 29 31 35 37 41 43 47 49 53 55 59 61 65 67 ...
 // 0 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21
 // only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
-presence(limit/3 + 1, true) {
+presence(m_limit/3 + 1, true) {
 	auto prime = primes.begin();
 	*prime++ = 2;
 	*prime++ = 3;
 
-	const prime_t bound = limit/3;
-	const prime_t iteration_limit = sqrt(limit)/6 + 1;
+	const prime_t bound = m_limit/3;
+	const prime_t iteration_limit = sqrt(m_limit)/6 + 1;
 	prime_t i = 1;
 	for(;i < iteration_limit; i++) {
 		if(presence[2*i - 2]) {
@@ -88,7 +104,7 @@ presence(limit/3 + 1, true) {
 		}
 	}
 
-	for(;i<limit/6+1;i++) {
+	for(;i<m_limit/6+1;i++) {
 		if(presence[2*i - 2]) {
 			const prime_t p = 6*i-1;
 			*prime++ = p;
@@ -220,9 +236,7 @@ void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors) {
         }
     }
 
-    if(number > *primes.rbegin()) {
-    	factors.emplace_back(number,1);
-    }
+  	factors.emplace_back(number,1);
 }
 
 Factors factorize(uint64_t number, const PrimeNumbers &primes) {

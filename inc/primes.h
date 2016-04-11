@@ -34,10 +34,21 @@ bool prime_present(prime_t number, const PrimePresence &presence);
 
 class PrimeNumbers
 {
+	prime_t m_limit;
+	prime_t m_detect_limit;
+
 	Primes primes;
 	PrimePresence presence;
 public:
 	PrimeNumbers(prime_t limit);
+
+	prime_t limit() const {
+		return m_limit;
+	}
+
+	prime_t detect_limit() const {
+		return m_detect_limit;
+	}
 
 	inline auto begin() -> decltype(primes.begin()) {
 		return primes.begin();
