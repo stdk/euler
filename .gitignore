@@ -19,9 +19,3 @@
 .project
 .cproject
 .settings
-
-# cmake generated files
-*.cmake
-CMakeCache.txt
-CMakeFiles
-Makefile
