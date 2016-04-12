@@ -219,7 +219,7 @@ Factors common_factors(const Factors &a,
 	return common_factors;
 }
 
-void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors) {
+void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors, bool cutoff) {
     factors.clear();
 
     if(number <= 1) return;
@@ -234,14 +234,16 @@ void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors) {
             factors.emplace_back(prime, count);
             if(number == 1) return;
         }
+
+        if(cutoff && number < primes.limit() && primes[number]) break;
     }
 
   	factors.emplace_back(number,1);
 }
 
-Factors factorize(uint64_t number, const PrimeNumbers &primes) {
+Factors factorize(uint64_t number, const PrimeNumbers &primes, bool cutoff) {
 	Factors factors;
-    factorize(number, primes, factors);
+    factorize(number, primes, factors, cutoff);
     return factors;
 }
 

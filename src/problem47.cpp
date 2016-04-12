@@ -5,7 +5,7 @@
 
 template<class P>
 inline bool has_four_prime_factors(uint32_t number,const P &primes) {
-	return factorize(number,primes).size() == 4;
+	return factorize(number,primes,true).size() == 4;
 }
 
 template<class P>

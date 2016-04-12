@@ -87,8 +87,8 @@ public:
 	bool exclude_prime(prime_t number);
 };
 
-void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors);
-Factors factorize(uint64_t number, const PrimeNumbers &primes);
+void factorize(uint64_t number, const PrimeNumbers &primes, Factors &factors, bool cutoff=false);
+Factors factorize(uint64_t number, const PrimeNumbers &primes, bool cutoff=false);
 
 Factors common_factors(const Factors &a,
 		               const Factors &b);
