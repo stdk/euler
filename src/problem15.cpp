@@ -4,14 +4,14 @@
 #include <util.h>
 
 uint64_t path_count(size_t square_side_length) {
-	uint64_t sum = 1;
-	uint64_t current = 1;
+    uint64_t sum = 1;
+    uint64_t current = 1;
     
-	if(!util::test_mode()) std::cout << current << " ";
+    if(!util::test_mode()) std::cout << current << " ";
     for(size_t i=0;i<square_side_length;i++) {
         current = current * (square_side_length - i) / (i + 1);
         if(!util::test_mode()) {
-        	std::cout << current << " ";
+            std::cout << current << " ";
         }
         sum += current*current;
     }
@@ -23,13 +23,13 @@ uint64_t path_count(size_t square_side_length) {
 
 
 int main() {
-	auto count = path_count(20);
+    auto count = path_count(20);
 
-	if(!util::test_mode()) {
-		std::cout << "Path count: " << count << std::endl;
-	} else {
-		std::cout << count << std::endl;
-	}
+    if(!util::test_mode()) {
+        std::cout << "Path count: " << count << std::endl;
+    } else {
+        std::cout << count << std::endl;
+    }
     
     return 0;
 }

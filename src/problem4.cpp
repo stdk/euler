@@ -9,15 +9,15 @@
 #include <util.h>
 
 std::vector<size_t> expand(const Factors &factors) {
-	std::vector<size_t> expansion;
+    std::vector<size_t> expansion;
 
-	for(const auto &factor: factors) {
-		for(size_t i=0;i<factor.count;++i) {
-			expansion.push_back(factor.prime);
-		}
-	}
+    for(const auto &factor: factors) {
+        for(size_t i=0;i<factor.count;++i) {
+            expansion.push_back(factor.prime);
+        }
+    }
 
-	return expansion;
+    return expansion;
 }
 
 template<class FactorizationExpansion>
@@ -53,10 +53,10 @@ size_t palindrome_lookup(const Primes &primes) {
         auto f = formula();
         auto decomposition = factorize(f, primes);
         if(decomposition.size()) {
-        	if(!util::test_mode()) {
-				std::cout << f << ": ";
-				std::cout << decomposition << std::endl;
-        	}
+            if(!util::test_mode()) {
+                std::cout << f << ": ";
+                std::cout << decomposition << std::endl;
+            }
         
             if(satisfies(expand(decomposition))) {
                 return f;

@@ -31,7 +31,7 @@ const char* in ="\
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48\n";
 
 int main() {
-	std::ios_base::sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
 
     std::istringstream stream(in);
 
@@ -56,13 +56,13 @@ int main() {
     }
 
     if(!util::test_mode()) {
-		std::cout.fill('0');
-		for(size_t i=0;i<numbers.size();i++) {
-			std::cout << std::setw(2) << numbers[i] << " ";
-			if((i+1) % line_size == 0) {
-				std::cout << "\n";
-			}
-		}
+        std::cout.fill('0');
+        for(size_t i=0;i<numbers.size();i++) {
+            std::cout << std::setw(2) << numbers[i] << " ";
+            if((i+1) % line_size == 0) {
+                std::cout << "\n";
+            }
+        }
     }
 
     size_t max = 0;

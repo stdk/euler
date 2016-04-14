@@ -37,7 +37,7 @@ size_t get_value(const std::vector<std::string> &words) {
 }
 
 int main(int argc, char **argv) {
-	std::ios_base::sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
 
     if(argc < 2) {
         std::cout << "Please specify input filename." << std::endl;
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 
     std::fstream input(argv[1]);
     if(!util::test_mode()) {
-    	std::cout << "Value: ";
+        std::cout << "Value: ";
     }
     std::cout << get_value(read(input)) << std::endl;
 }

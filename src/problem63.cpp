@@ -10,28 +10,28 @@
  */
 
 size_t powerful_digits_count() {
-	size_t count = 0;
+    size_t count = 0;
 
-	for(size_t x=0;x<10;x++) {
-		size_t k_max = std::floor(1 / (1 - std::log(x)/std::log(10)));
-		count += k_max;
-	}
+    for(size_t x=0;x<10;x++) {
+        size_t k_max = std::floor(1 / (1 - std::log(x)/std::log(10)));
+        count += k_max;
+    }
 
-	return count;
+    return count;
 }
 
 int main() {
-	Measure measure;
+    Measure measure;
 
-	auto count = powerful_digits_count();
+    auto count = powerful_digits_count();
 
-	auto passed = measure.passed();
+    auto passed = measure.passed();
 
-	if(!util::test_mode()) {
-		std::cout << "Counting took: " << passed << " ms" << std::endl;
-		std::cout << "Powerful digits count: ";
-	}
-	std::cout << count << std::endl;
+    if(!util::test_mode()) {
+        std::cout << "Counting took: " << passed << " ms" << std::endl;
+        std::cout << "Powerful digits count: ";
+    }
+    std::cout << count << std::endl;
 
-	return 0;
+    return 0;
 }

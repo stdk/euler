@@ -59,7 +59,7 @@ public:
     }
     
     inline sequence_generator operator++(int) noexcept {
-    	sequence_generator tmp(*this);
+        sequence_generator tmp(*this);
         next();
         return tmp;
     }

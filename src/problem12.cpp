@@ -12,7 +12,7 @@ inline size_t divisors_count(const Factors &factors) {
 }
 
 int main() {
-	const prime_t limit = 1000000;
+    const prime_t limit = 1000000;
     auto primes = PrimeNumbers(limit);
     const size_t divisor_limit = 500;
     
@@ -22,8 +22,8 @@ int main() {
 
         auto factors = factorize(triangular, primes);
         if(divisors_count(factors) > divisor_limit) {
-        	std::cout << triangular << std::endl;
-        	break;
+            std::cout << triangular << std::endl;
+            break;
         }
     }
     

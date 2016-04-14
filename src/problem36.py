@@ -18,7 +18,7 @@ def range_with_digits(n):
         end = 10*end + 9
         n -= 1
     return begin,end
-	
+    
 s = 0
 
 for l in range(1,6+1):

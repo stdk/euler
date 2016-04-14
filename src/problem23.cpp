@@ -32,14 +32,14 @@ std::vector<size_t> get_abundant_numbers(size_t limit, const PrimeNumbers &prime
 }
 
 int main() {
-	Measure measure;
-	const auto &primes = PrimeNumbers(abundant_representable_limit);
-	auto passed = measure.passed();
-	if(!util::test_mode()) {
-		std::cout << "Prime generation took " << passed << " ms" << std::endl;
-	}
+    Measure measure;
+    const auto &primes = PrimeNumbers(abundant_representable_limit);
+    auto passed = measure.passed();
+    if(!util::test_mode()) {
+        std::cout << "Prime generation took " << passed << " ms" << std::endl;
+    }
 
-	measure.reset();
+    measure.reset();
     const auto abundant = get_abundant_numbers(abundant_representable_limit, primes);
 
     size_t total = abundant_representable_limit*(abundant_representable_limit-1)/2;
@@ -57,8 +57,8 @@ int main() {
 
     passed = measure.passed();
     if(!util::test_mode()) {
-    	std::cout << "Processing took " << passed << " ms" << std::endl;
-    	std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: ";
+        std::cout << "Processing took " << passed << " ms" << std::endl;
+        std::cout << "Sum of natural numbers not representable by the sum of two abundant numbers: ";
     }
     std::cout << total << std::endl;
     return 0;
