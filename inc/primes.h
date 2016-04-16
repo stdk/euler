@@ -50,35 +50,38 @@ public:
         return m_detect_limit;
     }
 
-    inline auto begin() -> decltype(primes.begin()) {
+    typedef decltype(primes.begin()) iterator;
+    typedef decltype(primes.cbegin()) const_iterator;
+
+    inline auto begin() {
         return primes.begin();
     }
 
-    inline auto begin() const -> decltype(primes.begin()) {
+    inline auto begin() const {
         return primes.begin();
     }
 
-    inline auto end() -> decltype(primes.end()) {
+    inline auto end() {
         return primes.end();
     }
 
-    inline auto end() const -> decltype(primes.end()) {
+    inline auto end() const {
         return primes.end();
     }
 
-    inline auto rbegin() -> decltype(primes.rbegin()) {
+    inline auto rbegin() {
         return primes.rbegin();
     }
 
-    inline auto rbegin() const -> decltype(primes.rbegin()) {
+    inline auto rbegin() const {
         return primes.rbegin();
     }
 
-    inline auto rend() -> decltype(primes.rend()) {
+    inline auto rend() {
         return primes.rend();
     }
 
-    inline auto rend() const -> decltype(primes.rend()) {
+    inline auto rend() const {
         return primes.rend();
     }
 
