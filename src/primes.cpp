@@ -115,6 +115,8 @@ presence(m_limit/3 + 1, true) {
         }
     }
 
+    for(;*(prime-1) > limit;--prime);
+
     primes.resize(prime - primes.begin());
 }
 
