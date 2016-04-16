@@ -1,11 +1,13 @@
 #include <cppformat/format.h>
 #include <cstdint>
 #include <cmath>
+#include <algorithm>
 #include <primes.h>
 #include <util.h>
+#include <optionparser.h>
 
 uint32_t totient(uint32_t n, const PrimeNumbers &primes) {
-    const auto &factors = factorize(n, primes);
+    const auto &factors = factorize(n, primes, true);
 
     uint32_t t = 1;
 
@@ -19,22 +21,197 @@ uint32_t totient(uint32_t n, const PrimeNumbers &primes) {
     return t;
 }
 
-int main(int argc, char **argv) {
-    std::ios_base::sync_with_stdio(false);
+template<class Container>
+auto init_combination(const Container &values, size_t N) {
+    std::vector<typename Container::const_iterator> c(N);
 
-    if(argc != 2) {
-        fmt::print("Usage: {} <max denominator>\n", argv[0]);
-        return 1;
+    std::iota(c.rbegin(),c.rend(),values.begin());
+    if(*c.begin() >= values.end()) {
+        c.clear();
     }
 
-    const prime_t limit = std::stoul(argv[1]);
+    return c;
+}
 
-    const auto &primes = PrimeNumbers(std::sqrt(limit)+1);
+template<class T, class V>
+bool next_combination(T begin, T end, V value_end) {
+    bool up = true;
+    for(auto element=begin;element!=end;++element) {
+        if(up) {
+            ++*element;
+            up = false;
+        }
+
+        if(*element == value_end) {
+            up = true;
+        } else {
+            auto value = *element;
+            size_t elements_left = value_end - value - 1;
+            size_t positions_to_fill = element - begin;
+            if(positions_to_fill > elements_left) {
+                up = true;
+            } else {
+                for(auto e = element;e != begin;*--e = ++value);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+template<class T, class V, class Checker>
+bool next_combination(T begin, T end, V value_end, Checker check) {
+    bool up = true;
+    for(auto element=begin;element!=end;++element) {
+        if(up) {
+            ++*element;
+            up = false;
+        }
+
+        if(*element == value_end) {
+            up = true;
+        } else {
+            auto value = *element;
+            size_t elements_left = value_end - value - 1;
+            size_t positions_to_fill = element - begin;
+            if(positions_to_fill > elements_left) {
+                up = true;
+            } else {
+                for(auto e = element;e != begin;*--e = ++value);
+
+                if(check(begin,end)) {
+                    return true;
+                } else {
+                    up = true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+uint64_t totient_method(uint64_t limit) {
+    const auto &primes = PrimeNumbers(std::sqrt(limit));
 
     uint64_t sum = 0;
 
-    for(uint32_t i=2;i<=limit;++i) {
-        sum += totient(i, primes);
+    for(auto i=limit;i>1;--i) {
+        sum += totient(i,primes);
+    }
+
+    return sum;
+}
+
+uint64_t moebius_method(uint64_t limit) {
+    const auto &primes = PrimeNumbers(limit);
+
+    uint64_t sum = limit*limit;
+
+    auto check = [&limit](auto begin, auto end) -> bool {
+        auto x = std::accumulate(begin,end,(size_t)1,[](auto p, auto v) {
+            return p * *v;
+        });
+        return x <= limit;
+    };
+
+    for(size_t count=1;;++count) {
+        auto c = init_combination(primes,count);
+        if(!c.size()) {
+            break;
+        }
+
+        if(!check(c.begin(),c.end())) {
+            break;
+        }
+
+        for(bool ok=true;ok;ok=next_combination(c.begin(),c.end(),primes.end(),check)) {
+
+            auto d = std::accumulate(c.begin(),c.end(),limit,[](auto p, auto x) {
+                return p / *x;
+            });
+
+            if(count % 2) {
+                sum -= d*d;
+            } else {
+                sum += d*d;
+            }
+
+            /*
+            fmt::print("[");
+            for(auto i=c.rbegin();i!=c.rend();++i) {
+                fmt::print("{} ",**i);
+            }
+            fmt::print("] -> D[{}] -> sum {}= {} -> {}\n",d,count % 2 ? "-" : "+",d*d,sum);
+            */
+        }
+    }
+
+    return (sum+1)/2 - 1;
+}
+
+struct Arg: public option::Arg
+{
+    static void printError(const char* msg1, const option::Option& opt, const char* msg2)
+    {
+        fmt::print(stderr, "{}", msg1);
+        fwrite(opt.name, opt.namelen, 1, stderr);
+        fmt::print(stderr, "{}", msg2);
+    }
+
+    static option::ArgStatus Numeric(const option::Option& option, bool msg)
+    {
+        char* endptr = 0;
+        if (option.arg != 0 && strtol(option.arg, &endptr, 10)){};
+        if (endptr != option.arg && *endptr == 0)
+            return option::ARG_OK;
+
+        if (msg) printError("Option '", option, "' requires a numeric argument\n");
+        return option::ARG_ILLEGAL;
+    }
+};
+
+enum  optionIndex { UNKNOWN, HELP, LIMIT, CHECK };
+const option::Descriptor usage[] =
+{
+    {UNKNOWN, 0,"" , ""     ,option::Arg::None,    "USAGE: problem72 [options]\n\n"
+                                                   "Options:" },
+    {HELP,    0,"" , "help" ,option::Arg::None,    "  --help  \tPrint usage and exit." },
+    {LIMIT,   0,"l", "limit",        Arg::Numeric, "  --limit, -l  \tSet calculation limit. Required." },
+    {CHECK,   0,"c", "check",        Arg::None   , "  --check, -c  \tPerform self-check." },
+    {UNKNOWN, 0,"" ,  ""    ,option::Arg::None   , "\nExamples:\n"
+                                                   "  problem72 --limit 1000\n"
+                                                   "  problem72 -l 1000000 -c\n" },
+    {0,0,0,0,0,0}
+};
+
+int main(int argc, char **argv) {
+    std::ios_base::sync_with_stdio(false);
+
+    argc-=(argc>0); argv+=(argc>0); // skip program name argv[0] if present
+    option::Stats  stats(usage, argc, argv);
+    option::Option options[stats.options_max], buffer[stats.buffer_max];
+    option::Parser parse(usage, argc, argv, options, buffer);
+
+    if (parse.error()) {
+        return 1;
+    }
+
+    if (options[HELP] || !options[LIMIT].count() || argc == 0) {
+        option::printUsage(std::cout, usage);
+        return 0;
+    }
+
+    const uint64_t limit = std::stoul(options[LIMIT].last()->arg);
+
+    auto sum = moebius_method(limit);
+
+    if(options[CHECK].count()) {
+        auto sum2 = totient_method(limit);
+        if(sum == sum2) {
+            fmt::print("Check succeeded.\n");
+        } else {
+            fmt::print("Totient method returned {}\n",sum2);
+        }
     }
 
     fmt::print("{}\n", sum);
