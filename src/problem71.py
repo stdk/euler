@@ -25,18 +25,15 @@ def gcd(p,q):
     else:
         return a*common_multiplier
 
-def numerator(q):
-    return divmod(3*q - 1,7)
-
-def search(limit):    
+def search(limit,a,b):    
     q = limit
     while q != 0:
-        p,mod = numerator(q)
+        p,mod = divmod(a*q-1,b)
         if mod == 0:
             return p/gcd(p,q)
         q -= 1
 
-if len(argv) != 2:
-    print 'Usage:', argv[0], '<max denominator>'
+if len(argv) != 4:
+    print 'Usage:', argv[0], '<max denominator> <a> <b>'
 else:        
-    print search(int(argv[1]))          
+    print search(*[int(arg) for arg in argv[1:]])
