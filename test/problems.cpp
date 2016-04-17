@@ -250,5 +250,5 @@ TEST_CASE("problem71", "[problem71]") {
 }
 
 TEST_CASE("problem72", "[problem72]") {
-    test_problem("problem72 -l 1000000", "303963552391\n");
+    test_problem("problem72 -d 1000000", "303963552391\n");
 }

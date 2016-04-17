@@ -149,15 +149,18 @@ uint64_t moebius_method(uint64_t limit) {
     return (sum+1)/2 - 1;
 }
 
+struct CppFormatWriter {
+    static void write(const char *str, size_t len) {
+        fmt::printf("%.*s",len,str);
+    }
+};
+
+std::ostream& operator<<(std::ostream& os, const option::Option& opt) {
+    return os << fmt::sprintf("%.*s",opt.namelen,opt.name);
+}
+
 struct Arg: public option::Arg
 {
-    static void printError(const char* msg1, const option::Option& opt, const char* msg2)
-    {
-        fmt::print(stderr, "{}", msg1);
-        fwrite(opt.name, opt.namelen, 1, stderr);
-        fmt::print(stderr, "{}", msg2);
-    }
-
     static option::ArgStatus Numeric(const option::Option& option, bool msg)
     {
         char* endptr = 0;
@@ -165,22 +168,22 @@ struct Arg: public option::Arg
         if (endptr != option.arg && *endptr == 0)
             return option::ARG_OK;
 
-        if (msg) printError("Option '", option, "' requires a numeric argument\n");
+        if (msg) fmt::print("Option '{}' requires a numeric argument\n",option);
         return option::ARG_ILLEGAL;
     }
 };
 
-enum  optionIndex { UNKNOWN, HELP, LIMIT, CHECK };
+enum  optionIndex { UNKNOWN, HELP, MAX_DENOMINATOR, CHECK };
 const option::Descriptor usage[] =
 {
-    {UNKNOWN, 0,"" , ""     ,option::Arg::None,    "USAGE: problem72 [options]\n\n"
-                                                   "Options:" },
-    {HELP,    0,"" , "help" ,option::Arg::None,    "  --help  \tPrint usage and exit." },
-    {LIMIT,   0,"l", "limit",        Arg::Numeric, "  --limit, -l  \tSet calculation limit. Required." },
-    {CHECK,   0,"c", "check",        Arg::None   , "  --check, -c  \tPerform self-check." },
-    {UNKNOWN, 0,"" ,  ""    ,option::Arg::None   , "\nExamples:\n"
-                                                   "  problem72 --limit 1000\n"
-                                                   "  problem72 -l 1000000 -c\n" },
+    {UNKNOWN,           0,"" , ""           ,Arg::None,    "USAGE: problem72 [options]\n\n"
+                                                           "Options:" },
+    {HELP,              0,"" , "help"       ,Arg::None,    "  --help  \tPrint usage and exit." },
+    {MAX_DENOMINATOR,   0,"d", "denominator",Arg::Numeric, "  --denominator, -l  \tSet max denominator. Required." },
+    {CHECK,             0,"c", "check"      ,Arg::None   , "  --check, -c  \tPerform self-check." },
+    {UNKNOWN,           0,"" ,  ""          ,Arg::None   , "\nExamples:\n"
+                                                           "  problem72 --denominator 1000\n"
+                                                           "  problem72 -d 1000000 -c\n" },
     {0,0,0,0,0,0}
 };
 
@@ -196,12 +199,12 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    if (options[HELP] || !options[LIMIT].count() || argc == 0) {
-        option::printUsage(std::cout, usage);
+    if (options[HELP] || !options[MAX_DENOMINATOR].count() || argc == 0) {
+        option::printUsage(CppFormatWriter(), usage);
         return 0;
     }
 
-    const uint64_t limit = std::stoul(options[LIMIT].last()->arg);
+    const uint64_t limit = std::stoul(options[MAX_DENOMINATOR].last()->arg);
 
     auto sum = moebius_method(limit);
 
