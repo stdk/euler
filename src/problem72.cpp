@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <primes.h>
 #include <util.h>
-#include <optionparser.h>
+#include <optionparser_customized.h>
 
 uint32_t totient(uint32_t n, const PrimeNumbers &primes) {
     const auto &factors = factorize(n, primes, true);
@@ -148,30 +148,6 @@ uint64_t moebius_method(uint64_t limit) {
 
     return (sum+1)/2 - 1;
 }
-
-struct CppFormatWriter {
-    static void write(const char *str, size_t len) {
-        fmt::printf("%.*s",len,str);
-    }
-};
-
-std::ostream& operator<<(std::ostream& os, const option::Option& opt) {
-    return os << fmt::sprintf("%.*s",opt.namelen,opt.name);
-}
-
-struct Arg: public option::Arg
-{
-    static option::ArgStatus Numeric(const option::Option& option, bool msg)
-    {
-        char* endptr = 0;
-        if (option.arg != 0 && strtol(option.arg, &endptr, 10)){};
-        if (endptr != option.arg && *endptr == 0)
-            return option::ARG_OK;
-
-        if (msg) fmt::print("Option '{}' requires a numeric argument\n",option);
-        return option::ARG_ILLEGAL;
-    }
-};
 
 enum  optionIndex { UNKNOWN, HELP, MAX_DENOMINATOR, CHECK };
 const option::Descriptor usage[] =
