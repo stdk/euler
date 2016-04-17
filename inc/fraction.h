@@ -32,6 +32,29 @@ public:
         return os << _p << "/" << _q;
     }
 
+    static Fraction<T> read(const std::string &s) {
+        Fraction<T> fraction(0,1);
+
+        std::size_t pos = 0;
+        fraction._p = std::stoul(s,&pos,0);
+
+        if(pos && s[pos]=='/') {
+            std::size_t pos2 = 0;
+            fraction._q = std::stoul(s.c_str()+pos+1,&pos2,0);
+        }
+
+        return fraction;
+    }
+
+    inline std::istream& read(std::istream &is) {
+        std::string s;
+        is >> s;
+
+        *this = read(s);
+
+        return is;
+    }
+
     Fraction<T> simplify() const {
         T divisor = gcd(_p,_q);
 
@@ -96,6 +119,11 @@ public:
 template<typename T>
 std::ostream& operator<<(std::ostream &os, const Fraction<T> &f) {
     return f.write(os);
+}
+
+template<typename T>
+std::istream& operator>>(std::istream &is, Fraction<T> &f) {
+    return f.read(is);
 }
 
 #endif /* FRACTION_H_ */
