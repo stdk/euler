@@ -27,7 +27,27 @@ struct Arg: public option::Arg
         }
 
         if (msg) {
-            fmt::print("Option '{}' requires a numeric argument\n",option);
+            fmt::print(stderr,"Option '{}' requires a numeric argument\n",option);
+        }
+        return option::ARG_ILLEGAL;
+    }
+
+    static option::ArgStatus Fraction(const option::Option& option, bool msg)
+    {
+        std::size_t pos = 0;
+        if(option.arg) {
+            std::stoul(option.arg,&pos,0);
+        }
+        if(pos && option.arg[pos]=='/') {
+            std::size_t pos2 = 0;
+            std::stoul(option.arg+pos+1,&pos2,0);
+            if(pos2 && !option.arg[pos+1+pos2]) {
+                return option::ARG_OK;
+            }
+        }
+
+        if (msg) {
+            fmt::print(stderr,"Option '{}' requires a fractional argument, e.g: 1/2\n",option);
         }
         return option::ARG_ILLEGAL;
     }
