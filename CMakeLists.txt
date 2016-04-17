@@ -144,3 +144,6 @@ target_link_libraries(problem70 primes cppformat)
 
 add_executable(problem72 "src/problem72.cpp")
 target_link_libraries(problem72 primes cppformat)
+
+add_executable(problem73 "src/problem73.cpp")
+target_link_libraries(problem73 primes cppformat)
