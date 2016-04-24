@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cmath>
 #include <algorithm>
+#include <functional>
 #include <primes.h>
 #include <util.h>
 #include <optionparser_customized.h>
@@ -91,7 +92,7 @@ bool next_combination(T begin, T end, V value_end, Checker check) {
 }
 
 uint64_t totient_method(uint64_t limit) {
-    const auto &primes = PrimeNumbers(std::sqrt(limit));
+    const auto &primes = PrimeNumbers(std::sqrt(limit)+1);
 
     uint64_t sum = 0;
 
@@ -136,17 +137,62 @@ uint64_t moebius_method(uint64_t limit) {
                 sum += d*d;
             }
 
-            /*
-            fmt::print("[");
-            for(auto i=c.rbegin();i!=c.rend();++i) {
-                fmt::print("{} ",**i);
-            }
-            fmt::print("] -> D[{}] -> sum {}= {} -> {}\n",d,count % 2 ? "-" : "+",d*d,sum);
-            */
+//            fmt::print("[");
+//            for(auto i=c.rbegin();i!=c.rend();++i) {
+//                fmt::print("{} ",**i);
+//            }
+//            fmt::print("] -> D[{}] -> sum {}= {} -> {}\n",d,count % 2 ? "-" : "+",d*d,sum);
         }
     }
 
     return (sum+1)/2 - 1;
+}
+
+uint64_t sieving_totient_method(uint64_t limit) {
+    std::vector<uint32_t> t(limit/2+2);
+
+    const uint32_t iteration_limit = limit / 2 + limit % 2;
+
+    for(size_t i=1;i<=iteration_limit;++i) {
+        t[i] = 2*i+1;
+    }
+
+    uint64_t sum = 0;
+    for(uint32_t x=2;x<=limit;x*=2) {
+        sum += x/2;
+    }
+
+    for(uint32_t i=1;i<iteration_limit;++i) {
+        const uint32_t n = 2*i+1;
+        if(t[i] == n) {
+            t[i] = n - 1;
+            for(uint32_t k=i+n;k<iteration_limit;k+=n) {
+                t[k] /= n;
+                t[k] *= (n - 1);
+            }
+        }
+        sum += t[i];
+        for(uint32_t x=n*2,d=1;x<=limit;x*=2,d*=2) {
+            sum += d*t[i];
+        }
+    }
+
+//    for(uint32_t i=0;i<iteration_limit;++i) {
+//        fmt::print("{:2} ",i);
+//    }
+//    fmt::print("\n");
+//
+//    for(uint32_t i=0;i<iteration_limit;++i) {
+//        fmt::print("{:2} ",2*i+1);
+//    }
+//    fmt::print("\n");
+//
+//    for(uint32_t i=0;i<iteration_limit;++i) {
+//        fmt::print("{:2} ",t[i]);
+//    }
+//    fmt::print("\n");
+
+    return sum;
 }
 
 enum  optionIndex { UNKNOWN, HELP, MAX_DENOMINATOR, CHECK };
@@ -182,14 +228,16 @@ int main(int argc, char **argv) {
 
     const uint64_t limit = std::stoul(options[MAX_DENOMINATOR].last()->arg);
 
-    auto sum = moebius_method(limit);
+    auto sum = sieving_totient_method(limit);
 
     if(options[CHECK].count()) {
         auto sum2 = totient_method(limit);
-        if(sum == sum2) {
+        auto sum3 = moebius_method(limit);
+        if(sum == sum2 && sum == sum3) {
             fmt::print("Check succeeded.\n");
         } else {
             fmt::print("Totient method returned {}\n",sum2);
+            fmt::print("Moebius method returned {}\n",sum3);
         }
     }
 
