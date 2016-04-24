@@ -65,20 +65,24 @@ primes(m_limit/(log(m_limit)-1.1)),
 // 5 7 11 13 17 19 23 25 29 31 35 37 41 43 47 49 53 55 59 61 65 67 ...
 // 0 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21
 // only numbers of the following form: 6*n - 1, 6*n + 1, n >= 1 can be primes
-presence(m_limit/3 + 1, true) {
+presence(m_limit/3 + 2, true) {
     auto prime = primes.begin();
     *prime++ = 2;
     *prime++ = 3;
 
     const prime_t bound = m_limit/3;
     const prime_t iteration_limit = sqrt(m_limit)/6 + 1;
-    prime_t i = 1;
-    for(;i < iteration_limit; i++) {
-        if(presence[2*i - 2]) {
-            const prime_t p = 6*i-1;
-            const prime_t diff = 2*p;
-            prime_t j1 = p*p/6*2 - 1;
-            prime_t j2 = j1 + 4*i - 1;
+
+    prime_t i = 0;
+    prime_t i2 = 0;
+    prime_t a = 5;
+    prime_t b = 7;
+    for(;i < iteration_limit;i2+=2*i+1, i++, a+=6, b+=6) {
+        if(presence[2*i]) {
+            *prime++ = a;
+            const prime_t diff = 2*a;
+            prime_t j1 = (3*i2 + 5*i + 2)*4-1;
+            prime_t j2 = j1 + 4*(i+1) - 1;
             for(;j2 < bound;j1+=diff,j2+=diff) {
                 presence[j1] = false;
                 presence[j2] = false;
@@ -86,13 +90,12 @@ presence(m_limit/3 + 1, true) {
             for(;j1 < bound;j1+=diff) {
                 presence[j1] = false;
             }
-            *prime++ = p;
         }
-        if(presence[2*i - 1]) {
-            const prime_t p = 6*i+1;
-            const prime_t diff = 2*p;
-            prime_t j2 = p*p/6*2 - 1;
-            prime_t j1 = j2 - 4*i - 1;
+        if(presence[2*i + 1]) {
+            *prime++ = b;
+            const prime_t diff = 2*b;
+            prime_t j2 = (3*i2 + 7*i + 4)*4-1;
+            prime_t j1 = j2 - 4*(i+1) - 1;
             for(;j2 < bound;j1+=diff,j2+=diff) {
                 presence[j1] = false;
                 presence[j2] = false;
@@ -100,18 +103,16 @@ presence(m_limit/3 + 1, true) {
             for(;j1 < bound;j1+=diff) {
                 presence[j1] = false;
             }
-            *prime++ = p;
+
         }
     }
 
-    for(;i<m_limit/6+1;i++) {
-        if(presence[2*i - 2]) {
-            const prime_t p = 6*i-1;
-            *prime++ = p;
+    for(;i<m_limit/6+1;i++,a+=6,b+=6) {
+        if(presence[2*i]) {
+            *prime++ = a;
         }
-        if(presence[2*i - 1]) {
-            const prime_t p = 6*i+1;
-            *prime++ = p;
+        if(presence[2*i + 1]) {
+            *prime++ = b;
         }
     }
 
