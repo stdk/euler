@@ -137,6 +137,14 @@ uint64_t moebius_method(uint64_t limit) {
                 sum += d*d;
             }
 
+            if(util::debug_mode()) {
+                auto i = std::accumulate(c.begin(),c.end(),(size_t)1,[](auto a, auto b) {
+                    return a**b;
+                });
+
+                fmt::print("n[{:10}] D[{:10}] -> sum {}= {:10}\n",i,d,count % 2 ? "-" : "+",d*d);
+            }
+
 //            fmt::print("[");
 //            for(auto i=c.rbegin();i!=c.rend();++i) {
 //                fmt::print("{} ",**i);
@@ -177,32 +185,133 @@ uint64_t sieving_totient_method(uint64_t limit) {
         }
     }
 
-//    for(uint32_t i=0;i<iteration_limit;++i) {
-//        fmt::print("{:2} ",i);
-//    }
-//    fmt::print("\n");
-//
-//    for(uint32_t i=0;i<iteration_limit;++i) {
-//        fmt::print("{:2} ",2*i+1);
-//    }
-//    fmt::print("\n");
-//
-//    for(uint32_t i=0;i<iteration_limit;++i) {
-//        fmt::print("{:2} ",t[i]);
-//    }
-//    fmt::print("\n");
+    if(util::debug_mode()) {
+        for(uint32_t i=0;i<iteration_limit;++i) {
+            fmt::print("{:2} ",i);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=0;i<iteration_limit;++i) {
+            fmt::print("{:2} ",2*i+1);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=0;i<iteration_limit;++i) {
+            fmt::print("{:2} ",t[i]);
+        }
+        fmt::print("\n");
+    }
 
     return sum;
 }
 
-enum  optionIndex { UNKNOWN, HELP, MAX_DENOMINATOR, CHECK };
+uint64_t sieving_moebius_method(uint64_t limit) {
+    const uint64_t iteration_limit = limit/2 + limit % 2;
+
+    std::vector<bool> prime(iteration_limit,true);
+    std::vector<bool> odd(iteration_limit,false);
+    std::vector<bool> squared(iteration_limit,false);
+
+    uint64_t sum = limit*limit;
+
+    uint64_t x2 = limit/2;
+    sum -= x2*x2;
+    if(util::debug_mode()) {
+        fmt::print("n[{:10}] D[{:10}] -> sum {}= {:10}\n",2,x2,"-",x2*x2);
+    }
+
+    for(uint64_t i=1;i<iteration_limit;++i) {
+        uint64_t n = 2*i + 1;
+        if(prime[i]) {
+            odd[i] = true;
+            for(uint64_t k=i+n;k<iteration_limit;k+=n) {
+                odd[k] = odd[k] ^ true;
+                prime[k] = false;
+            }
+
+            uint64_t s = n*n;
+            for(uint64_t k=(s-1)/2;k<iteration_limit;k+=s) {
+                squared[k] = true;
+            }
+        }
+
+        if(!squared[i]) {
+            uint64_t x = limit/n;
+            if(odd[i]) {
+                sum -= x*x;
+            } else {
+                sum += x*x;
+            }
+
+            if(util::debug_mode()) {
+                fmt::print("n[{:10}] D[{:10}] -> sum {}= {:10}\n",n,x,odd[i] ? "-" : "+",x*x);
+            }
+
+            if(2*n <= limit) {
+                //inverse logic due to an additional factor of 2
+                uint64_t x = limit/(2*n);
+                if(!odd[i]) {
+                    sum -= x*x;
+                } else {
+                    sum += x*x;
+                }
+
+                if(util::debug_mode()) {
+                    fmt::print("n[{:10}] D[{:10}] -> sum {}= {:10}\n",2*n,x,!odd[i] ? "-" : "+",x*x);
+                }
+            }
+
+        }
+    }
+
+    if(util::debug_mode()) {
+        const char * format = "{:2} ";
+
+        for(uint32_t i=1;i<iteration_limit;++i) {
+            fmt::print(format,i);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=1;i<iteration_limit;++i) {
+            fmt::print(format,2*i+1);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=1;i<iteration_limit;++i) {
+            fmt::print(format,prime[i]);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=1;i<iteration_limit;++i) {
+            fmt::print(format,odd[i]);
+        }
+        fmt::print("\n");
+
+        for(uint32_t i=1;i<iteration_limit;++i) {
+            fmt::print(format,squared[i]);
+        }
+        fmt::print("\n");
+    }
+
+    return (sum+1)/2 - 1;
+}
+
+enum  optionIndex { UNKNOWN, HELP, MAX_DENOMINATOR, METHOD, REPEAT };
 const option::Descriptor usage[] =
 {
     {UNKNOWN,           0,"" , ""           ,Arg::None,    "USAGE: problem72 [options]\n\n"
                                                            "Options:" },
     {HELP,              0,"" , "help"       ,Arg::None,    "  --help  \tPrint usage and exit." },
-    {MAX_DENOMINATOR,   0,"d", "denominator",Arg::Numeric, "  --denominator, -l  \tSet max denominator. Required." },
-    {CHECK,             0,"c", "check"      ,Arg::None   , "  --check, -c  \tPerform self-check." },
+    {MAX_DENOMINATOR,   0,"d", "denominator",Arg::Unsigned,"  --denominator, -l  \tSet max denominator. Required." },
+    {METHOD,            0,"m", "method"     ,Arg::Unsigned,"  --method, -m  \tSelect method:\n"
+                                                           "    0 - totient\n"
+                                                           "    1 - moebius\n"
+                                                           "    2 - sieving totient\n"
+                                                           "    3 - sieving moebius\n"
+                                                           "    At least one method must be selected.\n"
+                                                           "    Multiple occurrences allowed."},
+    {REPEAT,            0,"r", "repeat"     ,Arg::Unsigned,"  --repeat, -r  \tPerform calculation given number of times."
+                                                           "    Defaults to 1. Setting another value suppresses program output." },
     {UNKNOWN,           0,"" ,  ""          ,Arg::None   , "\nExamples:\n"
                                                            "  problem72 --denominator 1000\n"
                                                            "  problem72 -d 1000000 -c\n" },
@@ -221,27 +330,56 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    if (options[HELP] || !options[MAX_DENOMINATOR].count() || argc == 0) {
+    if (argc == 0 || options[HELP]) {
         option::printUsage(CppFormatWriter(), usage);
         return 0;
     }
 
-    const uint64_t limit = std::stoul(options[MAX_DENOMINATOR].last()->arg);
-
-    auto sum = sieving_totient_method(limit);
-
-    if(options[CHECK].count()) {
-        auto sum2 = totient_method(limit);
-        auto sum3 = moebius_method(limit);
-        if(sum == sum2 && sum == sum3) {
-            fmt::print("Check succeeded.\n");
-        } else {
-            fmt::print("Totient method returned {}\n",sum2);
-            fmt::print("Moebius method returned {}\n",sum3);
-        }
+    if(!options[MAX_DENOMINATOR].count()) {
+        fmt::print("Denominator option is required.\n");
+        return 2;
     }
 
-    fmt::print("{}\n", sum);
+    if(!options[METHOD].count()) {
+        fmt::print("At least one method must be selected.\n");
+        return 2;
+    }
+
+    for (option::Option* opt = options[UNKNOWN]; opt; opt = opt->next()) {
+        fmt::print("Unknown option: {}\n", opt->name);
+    }
+
+    const uint64_t limit = std::stoul(options[MAX_DENOMINATOR].last()->arg);
+    const uint32_t repeat = (options[REPEAT].count() ? std::stoul(options[REPEAT].last()->arg) : 1);
+
+    std::function<uint64_t(uint64_t)> methods[] = {
+            totient_method,
+            moebius_method,
+            sieving_totient_method,
+            sieving_moebius_method,
+    };
+
+    for (option::Option* opt = options[METHOD]; opt; opt = opt->next()) {
+        const uint32_t method_index = std::stoul(opt->arg);
+        if(method_index < sizeof(methods)/sizeof(*methods)) {
+            if(repeat == 1) {
+                auto result = methods[method_index](limit);
+                if(!util::test_mode()) {
+                    fmt::print("Method[{}] -> {}\n", method_index, result);
+                } else {
+                    fmt::print("{}\n",result);
+                }
+            } else {
+                auto method = methods[method_index];
+                uint64_t total = 0;
+                for(uint32_t i=0;i<repeat;i++) {
+                    total += method(limit);
+                }
+            }
+        } else {
+            fmt::print("There is no method with index {}\n", method_index);
+        }
+    }
 
     return 0;
 }
