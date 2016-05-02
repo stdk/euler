@@ -16,13 +16,20 @@
 #include <cstdlib>
 
 namespace util {
-    const char *test_mode_str = std::getenv("TEST_MODE");
-    const bool test_mode_state = util::test_mode_str ? std::string(util::test_mode_str) == "1" : false;
-
     inline bool test_mode() {
+        static const char *test_mode_str = std::getenv("TEST_MODE");
+        static const bool test_mode_state = test_mode_str ? std::string(test_mode_str) == "1" : false;
+
         return test_mode_state;
     }
-}
+
+    inline bool debug_mode() {
+        static const char *debug_mode_str = std::getenv("DEBUG");
+        static const bool debug_mode_state = debug_mode_str ? std::string(debug_mode_str) == "1" : false;
+
+        return debug_mode_state;
+    }
+};
 
 using UniqueIostreamPtr = std::unique_ptr<std::istream,std::function<void(std::istream*)>>;
 
