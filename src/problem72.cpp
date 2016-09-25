@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cmath>
 #include <algorithm>
+#include <numeric>
 #include <functional>
 #include <primes.h>
 #include <util.h>

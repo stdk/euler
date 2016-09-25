@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <numeric>
 #include <functional>
 #include <util.h>
 #include <primes.h>

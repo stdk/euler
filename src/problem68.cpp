@@ -4,6 +4,7 @@
 #include <bitset>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 #include <type_traits>
 #include <util.h>
 #include <set>

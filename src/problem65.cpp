@@ -1,3 +1,4 @@
+#include <numeric>
 #include <cppformat/format.h>
 #include <gmpxx.h>
 #include <util.h>

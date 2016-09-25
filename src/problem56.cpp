@@ -1,4 +1,5 @@
 #include <iostream>
+#include <numeric>
 #include <gmpxx.h>
 #include <util.h>
 
