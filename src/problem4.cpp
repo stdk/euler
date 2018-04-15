@@ -41,16 +41,8 @@ static bool satisfies(const FactorizationExpansion &decomposition) {
 
 template<class Primes>
 size_t palindrome_lookup(const Primes &primes) {
-    const size_t max_digit = 9;
-    std::array<size_t, 3> factors;
-    factors.fill(max_digit);
-    
-    auto formula = [&]() {
-        return factors[0] * 100001 + factors[1] * 10010 + factors[2] * 1100;
-    };
-    
-    while(true) {
-        auto f = formula();
+    for(size_t digits=999;digits;--digits) {
+        auto f = digits*1000 + reverse_digits(digits);
         auto decomposition = factorize(f, primes);
         if(decomposition.size()) {
             if(!util::test_mode()) {
@@ -62,20 +54,9 @@ size_t palindrome_lookup(const Primes &primes) {
                 return f;
             }
         }
-        
-        for(int j=factors.size() - 1; j>=0; j--) {
-            if(!factors[j]) {
-                if(j) {
-                    factors[j] = max_digit;
-                } else {
-                    return 0;
-                } 
-            } else {
-                factors[j]--;
-                break;
-            }
-        }
     }
+
+    return 0;
 }
 
 int main() {
