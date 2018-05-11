@@ -29,13 +29,7 @@ struct extract_helper<std::array<SrcType,SrcSize>,std::array<IdxType,IdxSize>> {
     typedef std::array<IdxType,IdxSize> Index;
     typedef std::array<SrcType,SrcSize> Source;
 
-    const Index &idx;
-
-    extract_helper(Index _idx):idx(_idx) {
-
-    }
-
-    Result operator()(const Source &src) {
+    static Result extract(const Source &src, const Index &idx) {
         Result result;
         auto *j = result.begin();
         for(auto i:idx) {
@@ -46,9 +40,8 @@ struct extract_helper<std::array<SrcType,SrcSize>,std::array<IdxType,IdxSize>> {
 };
 
 template<class Source, class Index>
-auto extract(const Source &src, const Index &idx) -> typename extract_helper<Source,Index>::Result {
-    extract_helper<Source,Index> extractor(idx);
-    return extractor(src);
+inline auto extract(const Source &src, const Index &idx) -> typename extract_helper<Source,Index>::Result {
+    return extract_helper<Source,Index>::extract(src,idx);
 }
 
 struct state {
