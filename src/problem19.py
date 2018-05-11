@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from calendar import monthrange
 from collections import Counter
 

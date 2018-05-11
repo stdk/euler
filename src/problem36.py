@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 def is_binary_palindrome(x):
     b = bin(x)[2:]    
     l = len(b)//2

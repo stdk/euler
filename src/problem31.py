@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 def combo_count_bruteforce(target,value=0,nominals=None):
     if nominals is None:
         nominals = [200,100,50,20,10,5,2,1]    

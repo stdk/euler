@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 d = iter([10**i for i in range(1,10)])
 current_position = d.next()
 end_position = 9

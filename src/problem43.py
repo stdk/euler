@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 criteria = [
     (lambda avail: avail,               lambda n: n%13==0),                           # d7
     (lambda avail: avail & {0,5},       lambda n: n%11==0),                           # d6

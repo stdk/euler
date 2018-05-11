@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from itertools import permutations
 
 digits = set('123456789')

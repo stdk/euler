@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sys import argv
 
 def gcd(p,q):
