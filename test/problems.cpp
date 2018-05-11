@@ -22,10 +22,14 @@ std::string get_output(const std::string &command) {
     return os.str();
 }
 
-void test_problem(const std::string &command, const std::string &expected) {
-    REQUIRE(putenv("TEST_MODE=1")==0);
+void test_problem(const std::string &problem_title, const std::string &expected) {
+    char test_mode_enable[] = "TEST_MODE=1";
+    char test_mode_disable[] = "TEST_MODE=";
+    const std::string command = std::string("./") + problem_title;
+
+    REQUIRE(putenv(test_mode_enable)==0);
     REQUIRE(get_output(command) == expected);
-    REQUIRE(putenv("TEST_MODE=")==0);
+    REQUIRE(putenv(test_mode_disable)==0);
 }
 
 
@@ -58,7 +62,7 @@ TEST_CASE("problem18", "[problem18]") {
 }
 
 TEST_CASE("problem19", "[problem19]") {
-    test_problem("problem19", "171\n");
+    test_problem("problem19.py", "171\n");
 }
 
 TEST_CASE("problem20", "[problem20]") {
@@ -94,11 +98,11 @@ TEST_CASE("problem29", "[problem29]") {
 }
 
 TEST_CASE("problem31", "[problem29]") {
-    test_problem("problem31", "73682\n");
+    test_problem("problem31.py", "73682\n");
 }
 
 TEST_CASE("problem32", "[problem32]") {
-    test_problem("problem32", "45228\n");
+    test_problem("problem32.py", "45228\n");
 }
 
 TEST_CASE("problem33", "[problem33]") {
@@ -114,7 +118,7 @@ TEST_CASE("problem35", "[problem35]") {
 }
 
 TEST_CASE("problem36", "[problem36]") {
-    test_problem("problem36", "872187\n");
+    test_problem("problem36.py", "872187\n");
 }
 
 TEST_CASE("problem37", "[problem37]") {
@@ -122,7 +126,7 @@ TEST_CASE("problem37", "[problem37]") {
 }
 
 TEST_CASE("problem40", "[problem40]") {
-    test_problem("problem40", "210\n");
+    test_problem("problem40.py", "210\n");
 }
 
 TEST_CASE("problem41", "[problem41]") {
@@ -134,11 +138,11 @@ TEST_CASE("problem42", "[problem42]") {
 }
 
 TEST_CASE("problem43", "[problem43]") {
-    test_problem("problem43", "16695334890\n");
+    test_problem("problem43.py", "16695334890\n");
 }
 
 TEST_CASE("problem44", "[problem44]") {
-    test_problem("problem44", "5482660\n");
+    test_problem("problem44.py", "5482660\n");
 }
 
 TEST_CASE("problem45", "[problem45]") {
@@ -246,7 +250,7 @@ TEST_CASE("problem70", "[problem70]") {
 }
 
 TEST_CASE("problem71", "[problem71]") {
-    test_problem("problem71 1000000 3 7", "428570\n");
+    test_problem("problem71.py 1000000 3 7", "428570\n");
 }
 
 TEST_CASE("problem72", "[problem72]") {
